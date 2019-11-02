@@ -1,0 +1,46 @@
+.quote{
+  font-family: "Atomic Age"; /* Google Font */
+
+      max-width: 60%;
+      text-align: center;
+}
+
+.question{
+  color: #000;
+  font-weight: 100;
+}
+
+
+.titleInput, .answerOutput, .inputContri{
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #000;
+  text-align: center;
+  width: 300px;
+  font-size: 150%;
+  font-weight: 100;
+}
+
+.answerOutput{
+  width: 150px;
+}
+
+.poster{
+  display: none;
+}
+
+.poster.film, .poster.char {
+  width: 150px;
+  height: 225px;
+}
+
+
+.poster.clip{
+  width: 400px;
+}
+
+.result{
+  display: none;
+  width: 50px;
+  height: 50px;
+}

@@ -1,0 +1,43 @@
+.a .title{
+    border-bottom: 1px solid #000;
+}
+
+.trash{
+  height: 30px;
+  width: 30px;
+}
+
+.tr{
+ border: 4px solid green !important;
+}
+
+.editModal{
+  background-color: #fff;
+  display: none;
+  position: absolute;
+  top: 20%;
+  left: 25%;
+  text-align: center;
+  width:50%;
+  z-index: 10;
+  padding: 5px;
+}
+
+.modalBody{
+  height: 15em;
+
+}
+
+.background {
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 50%;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: none;
+  z-index: 5;
+  /* width: 100%; */
+  /* height: 10em; */
+}

@@ -1,0 +1,64 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  font-family:
+    "HelveticaNeue-Light",
+    "Helvetica Neue Light",
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    "Lucida Grande", sans-serif;
+}
+
+.page{
+  max-width: 100%;
+  height: 100px;
+  position: absolute;
+
+  text-align: center;
+  width: 100%;
+}
+
+input{
+  background-color: transparent;
+}
+
+.welcome, .game{
+  top: 50%;
+  margin-top: -100px;
+}
+
+.contribute{
+  top: 10%;
+}
+
+
+Link{
+  margin: 0;
+  padding: 0;
+  border-style: double;
+}
+
+
+.title{
+  font-size: 250%;
+  color: #000;
+  font-weight: 100;
+}
+
+button {
+  width: 10rem;
+  border-radius: 25px!important;
+  -webkit-border-radius: 25px!important;
+  -moz-border-radius: 25px!important;
+}
+
+button#home{
+  width: 15%;
+  position: absolute;
+  top: 2%;
+  left: 43%;
+}

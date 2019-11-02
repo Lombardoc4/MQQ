@@ -1,0 +1,7 @@
+.submission, .failure{
+  display: none;
+}
+
+.invalid {
+  border-color: red;
+}
