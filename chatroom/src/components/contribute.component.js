@@ -3,7 +3,7 @@ import axios from 'axios';
 import $ from "jquery";
 import './contribute.css';
 
-
+const LOCALIP = 'http://192.168.1.156:8080';
 // gotta to reset the text after submit
 
 
@@ -84,7 +84,7 @@ class Contribute extends React.Component {
       clipLink: this.state.clipLink,
     };
     //  send to db
-    var serverLocation = "http://localhost:8080/verifymyguy/contribute";
+    var serverLocation = LOCALIP + "/verifymyguy/contribute";
     axios.post(serverLocation, newQuote)
       .catch(err => console.log(err));
 

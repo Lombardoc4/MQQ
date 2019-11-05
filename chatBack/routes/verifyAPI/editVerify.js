@@ -1,13 +1,12 @@
 let QuoteSet = require('../../models/verifyQuote.model')
 
-
+//returns ALL users and ALL data
 module.exports = (req, res) => {
   QuoteSet.findById(req.params.id, function(err, quote) {
     if (err) {
-      res.status(404).send("Quote not found");
-    }
-    else {
-      quote.remove().then()
+        console.log(err);
+    } else {
+        res.json(quote);
     }
   });
-}
+};

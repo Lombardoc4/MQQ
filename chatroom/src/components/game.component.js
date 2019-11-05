@@ -4,6 +4,7 @@ import axios from 'axios';
 import ReactPlayer from 'react-player';
 import './game.css';
 
+const LOCALIP = 'http://192.168.1.156:8080';
 // change answer box answerInput color
 // resultIndicators still broken
 
@@ -24,17 +25,15 @@ class Game extends React.Component {
       input: '',
       answerInputs: [],
       results: [],
-      resultsImg: [],
     }
     this.nextStage = this.nextStage.bind(this);
     this.handleInput = this.handleInput.bind(this);
   }
 
   componentDidMount(){
-    var serverLocation = "http://localhost:8080/play"
+    var serverLocation = LOCALIP + '/play';
       axios.get(serverLocation)
       .then(res => {
-        console.log(res);
         //load quote
           this.setState({
             quote :  res.data.quote.quote,
@@ -61,6 +60,7 @@ class Game extends React.Component {
 
   nextStage(e){
     var stage = this.state.stage;
+    // console.log(stage)
 
     if (stage <= 3) {
       var input = this.state.input.toUpperCase();
@@ -70,6 +70,7 @@ class Game extends React.Component {
         this.setState(state => {
           state.results.push(true);
         })
+
       }
       else {
         this.setState(state => {
@@ -77,7 +78,6 @@ class Game extends React.Component {
         })
       }
 
-      this.state.resultsImg.push(this.state.results);
       if (stage === 1) {
         $(".stage1").fadeIn();
         $(".film").fadeIn();
@@ -110,6 +110,10 @@ class Game extends React.Component {
     this.setState({stage: stage, input: ''});
   }
 
+  whichBox(){
+
+  }
+
   render(){
     const stage = this.state.stage;
     let form, button;
@@ -133,12 +137,24 @@ class Game extends React.Component {
 
     return (
       <div>
-        <ImageBox film={this.state.filmPoster} char={this.state.charPoster} clip={this.state.clipLink}/>
+        <ImageBox
+          film={this.state.filmPoster}
+          char={this.state.charPoster}
+          clip={this.state.clipLink}
+        />
         <div class="w-100"></div>
-        <ResultBox stage={stage} resultsImg={this.state.resultsImg}/>
+        <ResultBox
+          stage={stage}
+          results={this.state.results}
+        />
         <h2 class="quote mx-auto">{this.state.quote}</h2>
+
         {form}
-        <Controller currStage={stage} nextStage={this.nextStage} name={button}/>
+
+        <Controller
+          nextStage={this.nextStage}
+          name={button}
+        />
       </div>
     );
   }
@@ -146,31 +162,27 @@ class Game extends React.Component {
 
 export default Game;
 
+var resultImg = [];
+
 function ResultBox(props) {
   let stage = props.stage;
-  let result = props.resultsImg[stage-2];
-  // console.log(result);
-  var resultImg = props.resultsImg;
+  let result = props.results;
 
-  resultImg.pop();
-
-
-  if (stage > 1){
-    // console.log(result[stage-2]);
-    // console.log(resultImg);
-    if (result[stage-2])
-    {
-      resultImg.push("https://icon-library.net/images/success-icon/success-icon-5.jpg");
+    for (var i = 0; i < result.length; i++) {
+      if (result[i])
+      {
+        resultImg[i] = ("https://icon-library.net/images/success-icon/success-icon-5.jpg");
+      }
+      else {
+        resultImg[i] = ("https://png.pngtree.com/svg/20170918/fail_641034.png")
+      };
     }
-    else {
-      resultImg.push("https://png.pngtree.com/svg/20170918/fail_641034.png")
-    };
-  }
+
   return(
     <div class="d-flex justify-content-center">
       <img src={resultImg[0]} alt="..." class="result stage1 p-2"/>
       <img src={resultImg[1]} alt="..." class="result stage2 p-2"/>
-      <img src={resultImg[3]} alt="..." class="result stage3 p-2"/>
+      <img src={resultImg[2]} alt="..." class="result stage3 p-2"/>
     </div>
   )
 }
@@ -191,57 +203,46 @@ function QuestionBox(props){
   // decide if form or game is going to be component
   // one has to get data and then maybe use the form component to fill out using of course props
   return(
-    <div>
-    <div class="form p-2 d-flex justify-content-center">
+    <div class="">
+    <div class="form p-0 d-flex justify-content-center">
       <h3 class="question pr-2">{props.question}: </h3>
-      <input class="titleInput" value={props.input} onChange={props.onInput} type="text" maxLength="20" />
+
+      <input class="titleInput" value={props.input} onChange={props.onInput} type="text" />
     </div>
     </div>
   );
 }
 
+  var color = [];
+  var allAnswers = [];
+
 function AnswerBox(props) {
   //return the answerInputs green if good, red if bad
   var answerResults = props.results;
-  var color;
-  console.log(answerResults);
+
 
 // this neeed to be cleaned up
-  for (var i =0; i < 3; i++){
-    if (answerResults[i] === true){
-      color = "status text-success";
+  for (var i =0; i < answerResults.length; i++){
+    if (answerResults[i]){
+      color[i] = "status text-success";
     }
     else {
-      color = 'status text-danger';
+      color[i] = 'status text-danger';
     }
+    allAnswers[i] =
+      <div class="form p-0 d-flex justify-content-center">
+        <h3 class="question pr-2">{props.question[i]}: </h3>
+        <p class="titleInput">
+          <span class={color[i]}>{props.answerInputs[i]}</span>
+          |
+          <span class="text-success">{props.answers[i]}</span>
+        </p>
+      </div>
   }
 
   return(
     <div class="">
-    <div class="form p-0 d-flex justify-content-center">
-      <h3 class="question pr-2">{props.question[0]}: </h3>
-      <p class="titleInput">
-        <span class={color}>{props.answerInputs[0]}</span>
-        |
-        <span class="text-success">{props.answers[0]}</span>
-      </p>
-    </div>
-    <div class="form d-flex justify-content-center">
-      <h3 class="question pr-2">{props.question[1]}: </h3>
-      <p class="titleInput">
-        <span class={color}>{props.answerInputs[1]}</span>
-        |
-        <span class="text-success">{props.answers[1]}</span>
-      </p>
-    </div>
-    <div class="form d-flex justify-content-center">
-      <h3 class="question pr-2">{props.question[2]}: </h3>
-      <p class="titleInput">
-        <span class={color}>{props.answerInputs[2]}</span>
-        |
-        <span class="text-success">{props.answers[2]}</span>
-      </p>
-    </div>
+    {allAnswers}
     </div>
   );
 }

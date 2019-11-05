@@ -20,7 +20,8 @@
   text-align: center;
   width:50%;
   z-index: 10;
-  padding: 5px;
+  padding: 1rem;
+  border-radius: 5%;
 }
 
 .modalBody{

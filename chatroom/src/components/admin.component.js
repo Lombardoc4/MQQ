@@ -2,7 +2,10 @@ import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 
+import Modal from './modal.component'
+
 import './admin.css';
+const LOCALIP = 'http://192.168.1.156:8080';
 
 // how ccan we get a rerender on delete or edit?
 // use omdbAPI to make req for posters and year.
@@ -21,17 +24,16 @@ class AdminPanel extends React.Component{
   }
 
   componentDidMount(){
-    var serverLocation = "http://localhost:8080/verifymyguy/verify";
+    var serverLocation = LOCALIP + "/verifymyguy/verify";
       axios.get(serverLocation)
       .then(res => {
-        console.log(res);
         this.setState({ verify: res.data,
           verifyLength: res.data.length });
       })
       .catch(function (error){
         console.log(error);
       });
-    serverLocation = "http://localhost:8080/verifymyguy/confirmed";
+    serverLocation = LOCALIP + "/verifymyguy/confirmed";
       axios.get(serverLocation)
       .then(res => {
         this.setState({ confirmed: res.data,
@@ -41,6 +43,8 @@ class AdminPanel extends React.Component{
         console.log(error);
       });
   }
+
+
 
   verify_List() {
   return this.state.verify.map(function(currentQuote, quote) {
@@ -57,16 +61,15 @@ class AdminPanel extends React.Component{
     $('.editModal').hide();
   }
 
+
   render(){
     return(
       <div>
       <div onClick={this.closeModal} class="background">
       </div>
       <div class="editModal">
-        <h4 class="title">It's me edit modal  </h4>
-        <div class="modalBody">This looks like a great place to edit the quote data muaahhah time to use an ajax request. maybe should use a new component for this so i can use modals everywhere  </div>
-        <button onClick={this.closeModal}>Close  </button>
-        <button class="btn-success">Confirm </button>
+
+        <Modal/>
 
       </div>
 
@@ -106,17 +109,42 @@ class AdminPanel extends React.Component{
 
 export default AdminPanel;
 
-function Verify(props) {
+function openModal(quote){
+          console.log(quote);
+    $('.editModal').show();
+    $('.background').show();
 
-  var deleteUser = (thisQuote) => {
-    var serverLocation = "http://localhost:8080/verifymyguy/verify/remove/" + thisQuote;
-    console.log(serverLocation);
-    axios.delete("http://localhost:8080/verifymyguy/verify/remove/" + thisQuote)
+}
+
+function Verify(props) {
+  var data;
+
+  var getQuote = (thisQuote) => {
+    console.log(thisQuote);
+    var serverLocation = LOCALIP + '/verifymyguy/verify/edit/' + thisQuote;
+      axios.get(serverLocation)
+      .then(res => {
+        //load quote
+        data = res.data;
+
+        openModal(data);
+        }
+      )
+      .catch(function (error){
+        console.log(error);
+      });
+
+  }
+
+  var deleteQuote = (thisQuote) => {
+    var serverLocation = LOCALIP + "/verifymyguy/verify/remove/" + thisQuote;
+    axios.delete(serverLocation)
       .catch(function (error){
         console.log(error);
       })
       .then(console.log("Quote denied!"))
   }
+  console.log(props);
 
   return (
     // just return title and year
@@ -127,33 +155,38 @@ function Verify(props) {
     <td class="d-block">"{props.verify.quote}"</td>
     <tr class="d-flex justify-content-end">
       <td>{props.verify.clipLink}</td>
-      <td><button>  Confirm </button></td>
-      <td><a onClick={() => deleteUser(props.verify._id)}><img src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png" alt="..." class="trash"/></a></td>
+      <td><button onClick={() => getQuote(props.verify._id)}>  Confirm </button></td>
+      <td><a onClick={() => deleteQuote(props.verify._id)}><img src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png" alt="..." class="trash"/></a></td>
       </tr>
   </tr>
 )
 }
 
-function ModalFunction(){
-    $('.editModal').show()
-    $('.background').show()
-
-    // $('.editModal').modal({backdrop: 'static', keyboard: false})
-  return
-}
-
 function Confirmed(props) {
+
+
+  var deleteQuote = (thisQuote) => {
+    var serverLocation = LOCALIP + "/verifymyguy/confirmed/remove/" + thisQuote;
+    axios.delete(serverLocation)
+      .catch(function (error){
+        console.log(error);
+      })
+      .then(console.log("Quote denied!"))
+      }
+
+
   return (
     // just return title and year
     // on click load rest of information
     // for confirm make edit page
     // for verify make add picture page
+
     <tr>
       <td>{props.confirmed.quote}</td>
       <tr class="d-block">
         <td>{props.confirmed.title}</td>
-        <td><button onClick={ModalFunction} class=""> Edit </button></td>
-        <td><img src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png" alt="..." class="trash"/></td>
+        <td><button onClick="" class=""> Edit </button></td>
+        <td><a onClick={() => deleteQuote(props.confirmed._id)}><img src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png" alt="..." class="trash"/></a></td>
         </tr>
 
       </tr>

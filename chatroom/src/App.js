@@ -8,6 +8,7 @@ import {
   Link
 } from "react-router-dom";
 
+
 import Game from './components/game.component';
 import Contribute from './components/contribute.component';
 import AdminPanel from './components/admin.component';
