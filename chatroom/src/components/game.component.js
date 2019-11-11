@@ -182,7 +182,6 @@ export default Game;
 var resultImg = [];
 
 function ResultBox(props) {
-  let stage = props.stage;
   let result = props.results;
 
     for (var i = 0; i < result.length; i++) {

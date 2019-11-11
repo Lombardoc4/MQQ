@@ -176,7 +176,7 @@ function Verify(props) {
     <td class="d-flex justify-content-end">
       <tr class="m-2">{props.verify.clipLink}</tr>
       <tr class="m-2"><button onClick={() => props.openModal(props.verify)}>  Confirm </button></tr>
-      <tr class="m-2"><a onClick={() => deleteQuote(props.verify._id)}><img src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png" alt="..." class="trash"/></a></tr>
+      <tr class="m-2"><p onClick={() => deleteQuote(props.verify._id)}><img src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png" alt="..." class="trash"/></p></tr>
     </td>
   </tr>
   )
@@ -206,7 +206,7 @@ function Confirmed(props) {
       <td class="d-flex justify-content-end">
         <tr class="m-2">{props.confirmed.title}</tr>
         <tr class="m-2"><button onClick= {() => props.openModal(props.confirmed)}> Edit </button></tr>
-        <tr class="m-2"><a onClick={() => deleteQuote(props.confirmed._id)}><img src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png" alt="..." class="trash"/></a></tr>
+        <tr class="m-2"><p onClick={() => deleteQuote(props.confirmed._id)}><img src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png" alt="..." class="trash"/></p></tr>
       </td>
 
     </tr>

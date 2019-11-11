@@ -63,6 +63,7 @@ class Modal extends React.Component {
       $('.form1')[i].classList.remove('d-none');
     }
     $(".form2").fadeOut();
+    $('.success').hide();
   }
 
   loadQuote = () => {
@@ -117,10 +118,10 @@ class Modal extends React.Component {
       }
     }
 
-    if (this.state.filmPoster === "https://via.placeholder.com/150x200");
-      {
-        console.log('test');
-      }
+    // if (this.state.filmPoster === "https://via.placeholder.com/150x200");
+    //   {
+    //     console.log('test');
+    //   }
     return valid;
   }
 
@@ -160,7 +161,7 @@ class Modal extends React.Component {
     if (this.props.side === 'Verify') {
       console.log('this')
     //  send to db
-    var serverLocation = LOCALIP + "/verifymyguy/confirmed/edit/" + this.props.data._id;
+    serverLocation = LOCALIP + "/verifymyguy/confirmed/edit/" + this.props.data._id;
     axios.put(serverLocation, newQuote)
       .catch(err => console.log(err))
       .then(console.log(newQuote));
@@ -200,7 +201,6 @@ class Modal extends React.Component {
   }
 
   render(){
-    var stage = this.state.stage
 
     var controller;
     if (this.state.stage === 2) {
