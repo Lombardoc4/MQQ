@@ -1,7 +1,7 @@
-let Confirmed = require('../../models/confirmedQuote.model');
+let Confirmed = require('../../../models/confirmedQuote.model');
 
 module.exports = (req, res) => {
-    let quote = new Verify(req.body);
+    let quote = new Confirmed(req.body);
     quote.save()
       .then(quote => {
         res.status(200).send('quote saved');

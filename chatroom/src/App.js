@@ -8,59 +8,11 @@ import {
   Link
 } from "react-router-dom";
 
-
 import Game from './components/game.component';
 import Contribute from './components/contribute.component';
-import AdminPanel from './components/admin.component';
+import AdminPanel from './components/admin/admin.component';
 
 import './App.css';
-
-function Home(props){
-  return(
-    <div class="welcome page">
-        <h2 class="title">Welcome to Movie Quote Quiz</h2>
-        <Link to="/play">
-          <button onClick={props.play} class='btn btn-success btn-lg m-3'>
-            Play
-          </button>
-        </Link>
-        <Link to="/contribute">
-          <button onClick={props.contribute} class='btn btn-primary btn-lg m-3'>
-            Contribute
-          </button>
-        </Link>
-    </div>
-  )
-}
-
-function Outline(props){
-  var action = props.action;
-  if (action === 'game'){
-    action =
-      <div class="game page">
-        <Game shift={props.gameShift}/>
-      </div>;
-  }
-  if (action === 'contribute'){
-    action =
-      <div class="contribute page">
-        <Contribute/>
-      </div>
-  }
-
-  return(
-    <div class="d-flex flex-column justify-content-center">
-      {action}
-      <div class="home h-100">
-        <Link to="/">
-          <button onClick={props.home} class='btn btn-outline-secondary'  id='home'>
-            Home
-          </button>
-        </Link>
-      </div>
-    </div>
-  )
-}
 
 class App extends React.Component {
     constructor(props) {
@@ -71,7 +23,6 @@ class App extends React.Component {
       this.play = this.play.bind(this);
       this.contribute = this.contribute.bind(this);
       this.home = this.home.bind(this);
-      this.gameShift = this.gameShift.bind(this);
     }
 
     play(e){
@@ -88,16 +39,6 @@ class App extends React.Component {
       $('.welcome').show();
       $('.game').hide();
       $('#home').hide();
-    }
-
-    gameShift(e,){
-      if(e === 'down') {
-        $('.game').css({top: '10%', marginTop: '0'});
-      }
-      if(e === 'up'){
-        $('.game').css({top: '50%', marginTop: '-100px'});
-      }
-
     }
 
 
@@ -132,3 +73,50 @@ class App extends React.Component {
 }
 
 export default withRouter(App);
+
+function Home(props){
+  return(
+    <div class="welcome page">
+        <h2 class="title">Welcome to Movie Quote Quiz</h2>
+        <Link to="/play">
+          <button onClick={props.play} class='btn btn-success btn-lg m-3'>
+            Play
+          </button>
+        </Link>
+        <Link to="/contribute">
+          <button onClick={props.contribute} class='btn btn-primary btn-lg m-3'>
+            Contribute
+          </button>
+        </Link>
+    </div>
+  )
+}
+
+function Outline(props){
+  var action = props.action;
+  if (action === 'game'){
+    action =
+      <div class="game page">
+        <Game/>
+      </div>;
+  }
+  if (action === 'contribute'){
+    action =
+      <div class="contribute page">
+        <Contribute/>
+      </div>
+  }
+
+  return(
+    <div class="d-flex flex-column justify-content-center">
+      {action}
+      <div class="home h-100">
+        <Link to="/">
+          <button onClick={props.home} class='btn btn-outline-secondary'  id='home'>
+            Home
+          </button>
+        </Link>
+      </div>
+    </div>
+  )
+}

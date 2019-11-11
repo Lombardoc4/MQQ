@@ -1,4 +1,4 @@
-let QuoteSet = require('../../models/confirmedQuote.model')
+let QuoteSet = require('../../../models/verifyQuote.model')
 
 //returns ALL users and ALL data
 module.exports = (req, res) => {

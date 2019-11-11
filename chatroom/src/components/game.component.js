@@ -4,7 +4,7 @@ import axios from 'axios';
 import ReactPlayer from 'react-player';
 import './game.css';
 
-const LOCALIP = 'http://192.168.1.156:8080';
+const LOCALIP = 'http://192.168.1.5:8080';
 // change answer box answerInput color
 // resultIndicators still broken
 
@@ -31,6 +31,10 @@ class Game extends React.Component {
   }
 
   componentDidMount(){
+    this.setQuote();
+  }
+
+  setQuote() {
     var serverLocation = LOCALIP + '/play';
       axios.get(serverLocation)
       .then(res => {
@@ -57,6 +61,14 @@ class Game extends React.Component {
     this.setState({input: e.target.value});
   }
 
+  gameShift(e){
+    if(e === 'down') {
+      $('.game').css({top: '10%', marginTop: '0'});
+    }
+    if(e === 'up'){
+      $('.game').css({top: '50%', marginTop: '-2em'});
+    }
+  }
 
   nextStage(e){
     var stage = this.state.stage;
@@ -81,7 +93,7 @@ class Game extends React.Component {
       if (stage === 1) {
         $(".stage1").fadeIn();
         $(".film").fadeIn();
-        this.props.shift('down');
+        this.gameShift('down');
       }
       if (stage === 2){
         $(".stage2").fadeIn();
@@ -96,22 +108,25 @@ class Game extends React.Component {
         stage++;
     }
     else {
-      $(".clip").hide();
-      $(".char").hide();
-      $(".film").hide();
-      $(".stage1").hide();
-      $(".stage2").hide();
-      $(".stage3").hide();
-      this.props.shift('up');
+
+      $(".stage1").hide(1);
+      $(".stage2").hide(1);
+      $(".stage3").hide(1);
+      $(".clip").fadeOut(1);
+      $(".char").fadeOut();
+      $(".film").fadeOut(() => {this.gameShift('up');this.setQuote();});
+
+
+
+      $(".quote").fadeOut();
+      $(".quote").fadeIn(1000);
+
 
       stage = 1;
+
       this.setState({answerInputs: [], results: []});
     }
     this.setState({stage: stage, input: ''});
-  }
-
-  whichBox(){
-
   }
 
   render(){
@@ -147,6 +162,7 @@ class Game extends React.Component {
           stage={stage}
           results={this.state.results}
         />
+        <div class="lower">
         <h2 class="quote mx-auto">{this.state.quote}</h2>
 
         {form}
@@ -155,6 +171,7 @@ class Game extends React.Component {
           nextStage={this.nextStage}
           name={button}
         />
+        </div>
       </div>
     );
   }
@@ -188,12 +205,11 @@ function ResultBox(props) {
 }
 
 function ImageBox(props) {
-
   return (
     <div class="d-flex justify-content-center">
-      <img src="https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg" alt="..." class="poster film p-2 img-fluid"/>
-      <ReactPlayer url='https://www.youtube.com/watch?v=ruhFmBrl4GM' width='400px' height="225px" class="poster clip p-2"/>
-      <img src="https://i.pinimg.com/736x/e0/6c/74/e06c740e8e6aec4aa651a7fb44f83623.jpg" alt="..." class="poster char p-2 img-fluid"/>
+      <img src={props.film} width="3em" alt="..." class="poster film p-2 img-fluid"/>
+      <ReactPlayer url={props.clip} min-width='20em' height="14em" class="poster clip p-2"/>
+      <img src={props.char} width="3em" alt="..." class="poster char p-2 img-fluid"/>
     </div>
   )
 }

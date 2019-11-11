@@ -3,7 +3,7 @@ import axios from 'axios';
 import $ from "jquery";
 import './contribute.css';
 
-const LOCALIP = 'http://192.168.1.156:8080';
+const LOCALIP = 'http://192.168.1.5:8080';
 // gotta to reset the text after submit
 
 
@@ -84,7 +84,7 @@ class Contribute extends React.Component {
       clipLink: this.state.clipLink,
     };
     //  send to db
-    var serverLocation = LOCALIP + "/verifymyguy/contribute";
+    var serverLocation = LOCALIP + "/verifymyguy/verify";
     axios.post(serverLocation, newQuote)
       .catch(err => console.log(err));
 
@@ -107,7 +107,7 @@ class Contribute extends React.Component {
       <p class="failure text-danger">Please provide all the information</p>
       <div class="form contri p-4 d-flex justify-content-center">
         <h3 class="question pr-2">Quote: </h3>
-        <input required class="inputContri" onChange={this.handleQuote} type="text"/>
+        <textarea required class="inputContri" onChange={this.handleQuote} type="text"/>
       </div>
       <div class="form contri p-4 d-flex justify-content-center">
         <h3 class="question pr-2">Title: </h3>

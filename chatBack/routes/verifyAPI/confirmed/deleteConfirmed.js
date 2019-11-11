@@ -1,4 +1,4 @@
-let QuoteSet = require('../../models/confirmedQuote.model')
+let QuoteSet = require('../../../models/confirmedQuote.model')
 
 
 module.exports = (req, res) => {

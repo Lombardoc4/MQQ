@@ -7,6 +7,7 @@
   width: 30px;
 }
 
+
 .tr{
  border: 4px solid green !important;
 }
@@ -14,25 +15,24 @@
 .editModal{
   background-color: #fff;
   display: none;
-  position: absolute;
-  top: 20%;
-  left: 25%;
+  position: fixed;
+  top: 5%;
+  left: 12%;
   text-align: center;
-  width:50%;
+  width:75%;
   z-index: 10;
   padding: 1rem;
-  border-radius: 5%;
+  border-radius: 50px;
 }
 
 .modalBody{
-  height: 15em;
+  height: 100vh;
 
 }
 
 .background {
   background: rgba(0, 0, 0, 0.5);
-  opacity: 50%;
-  position: absolute;
+  position: fixed;
   top:0;
   bottom: 0;
   left: 0;
@@ -40,5 +40,10 @@
   display: none;
   z-index: 5;
   /* width: 100%; */
-  /* height: 10em; */
+  height: 100vh;
+}
+
+
+.title.admin{
+  font-size: 150%;
 }

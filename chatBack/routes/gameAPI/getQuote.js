@@ -2,16 +2,21 @@ let QuoteSet = require('../../models/confirmedQuote.model')
 
 //returns ALL users and ALL data
 module.exports = (req, res) => {
-  QuoteSet.find(function(err, quotes) {
-      console.log('quote');
-        if (err) {
-            console.log(err);
-        } else {
-          const length = quotes.length
-          const random = Math.floor(Math.random() * length)
-          const quote = quotes[random];
+  QuoteSet.countDocuments().exec(function (err, count) {
 
-          res.status(200).json({ quote });
-        }
-    });
+  // Get a random entry
+  var random = Math.floor(Math.random() * count)
+
+  // Again query all users but only fetch one offset by our random #
+  QuoteSet.findOne().skip(random).exec(
+    function (err, quote) {
+      // Tada! random user
+      if (err) {
+          console.log(err);
+      }
+      else {
+        res.status(200).json({ quote });
+      }
+    })
+})
 };

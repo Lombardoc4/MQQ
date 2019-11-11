@@ -1,7 +1,6 @@
 .quote{
   font-family: "Atomic Age"; /* Google Font */
-
-      max-width: 60%;
+      max-width: 75%;
       text-align: center;
 }
 
@@ -32,6 +31,10 @@
 .poster.film, .poster.char {
   width: 150px;
   height: 225px;
+}
+
+.lower{
+  top: 50%;
 }
 
 

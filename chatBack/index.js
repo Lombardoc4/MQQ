@@ -18,16 +18,25 @@ var server = app.listen(PORT, function() {
 app.use(cors());
 const pass = process.env.MONGO + '';
 //change the database
-mongoose.connect(pass, {dbName : 'QuoteQuiz'});
+mongoose.connect(
+    pass,
+    {
+      dbName : 'QuoteQuiz',
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }
+  );
 
 // why connect data is local
 const connection = mongoose.connection;
-connection.once('open', function() {
-    console.log("MongoDB database connection established successfully");
-
-}).catch(function (error){
-  console.log(error);
-});
+connection.once(
+    'open',
+    function() {
+      console.log("MongoDB database connection established successfully");
+    })
+    .catch(function (error){
+      console.log(error);
+    });
 
 app.use(bodyParser.json());
 app.use('/', routes);
