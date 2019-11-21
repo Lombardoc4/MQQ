@@ -1,39 +1,42 @@
-.a .title{
-    border-bottom: 1px solid #000;
+.a .title {
+  border-bottom: 1px solid #000;
 }
 
-.trash{
-  height: 30px;
-  width: 30px;
+.trash {
+  height: 2em;
+  width: 2em;
 }
 
-
-.tr{
- border: 4px solid green !important;
+button.btnz {
+  height: 2em;
+  padding: 0;
 }
 
-.editModal{
+.tr {
+  border: 4px solid green !important;
+}
+
+.editModal {
   background-color: #fff;
   display: none;
   position: fixed;
   top: 5%;
   left: 12%;
   text-align: center;
-  width:75%;
+  width: 75%;
   z-index: 10;
   padding: 1rem;
   border-radius: 50px;
 }
 
-.modalBody{
+.modalBody {
   height: 100vh;
-
 }
 
 .background {
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
-  top:0;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
@@ -43,7 +46,6 @@
   height: 100vh;
 }
 
-
-.title.admin{
+.title.admin {
   font-size: 150%;
 }

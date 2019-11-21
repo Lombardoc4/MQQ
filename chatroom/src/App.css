@@ -4,16 +4,11 @@
 
 html {
   -webkit-font-smoothing: antialiased;
-  font-family:
-    "HelveticaNeue-Light",
-    "Helvetica Neue Light",
-    "Helvetica Neue",
-    Helvetica,
-    Arial,
-    "Lucida Grande", sans-serif;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
-.page{
+.page {
   max-width: 100%;
   height: 100px;
   position: absolute;
@@ -22,28 +17,27 @@ html {
   width: 100%;
 }
 
-input{
+input {
   background-color: transparent;
 }
 
-.welcome, .game{
+.welcome,
+.game {
   top: 50%;
   margin-top: -100px;
 }
 
-.contribute{
+.contribute {
   top: 10%;
 }
 
-
-Link{
+link {
   margin: 0;
   padding: 0;
   border-style: double;
 }
 
-
-.title{
+.title {
   font-size: 250%;
   color: #000;
   font-weight: 100;
@@ -51,12 +45,12 @@ Link{
 
 button {
   width: 10rem;
-  border-radius: 25px!important;
-  -webkit-border-radius: 25px!important;
-  -moz-border-radius: 25px!important;
+  border-radius: 25px !important;
+  -webkit-border-radius: 25px !important;
+  -moz-border-radius: 25px !important;
 }
 
-button#home{
+button#home {
   width: 15%;
   position: absolute;
   top: 2%;

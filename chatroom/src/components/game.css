@@ -1,16 +1,17 @@
-.quote{
+.quote {
   font-family: "Atomic Age"; /* Google Font */
-      max-width: 75%;
-      text-align: center;
+  max-width: 75%;
+  text-align: center;
 }
 
-.question{
+.question {
   color: #000;
   font-weight: 100;
 }
 
-
-.titleInput, .answerOutput, .inputContri{
+.titleInput,
+.answerOutput,
+.inputContri {
   border: none;
   outline: none;
   border-bottom: 1px solid #000;
@@ -20,29 +21,29 @@
   font-weight: 100;
 }
 
-.answerOutput{
+.answerOutput {
   width: 150px;
 }
 
-.poster{
+.poster {
   display: none;
 }
 
-.poster.film, .poster.char {
+.poster.film,
+.poster.char {
   width: 150px;
   height: 225px;
 }
 
-.lower{
+.lower {
   top: 50%;
 }
 
-
-.poster.clip{
+.poster.clip {
   width: 400px;
 }
 
-.result{
+.result {
   display: none;
   width: 50px;
   height: 50px;
