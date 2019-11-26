@@ -3,6 +3,27 @@
   display: none;
 }
 
+.main {
+  max-width: 660px;
+  margin: auto;
+}
+
 .invalid {
-  border-color: red;
+  color: red;
+}
+
+.form {
+  border-top: 1px dotted #000;
+  border-bottom: 1px dotted #000;
+}
+
+.titleInput,
+.answerOutput,
+.inputContri {
+  border: none;
+  outline: none;
+  text-align: center;
+  width: 250px;
+  font-size: 125%;
+  font-weight: 100;
 }

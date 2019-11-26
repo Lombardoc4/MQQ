@@ -113,7 +113,7 @@ function Outline(props) {
   return (
     <div class="d-flex flex-column justify-content-center">
       {action}
-      <div class="home h-100">
+      <div class="home">
         <Link to="/">
           <button
             onClick={props.home}

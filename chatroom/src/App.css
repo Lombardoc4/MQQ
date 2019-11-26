@@ -9,7 +9,6 @@ html {
 }
 
 .page {
-  max-width: 100%;
   height: 100px;
   position: absolute;
 
@@ -21,10 +20,13 @@ input {
   background-color: transparent;
 }
 
-.welcome,
-.game {
-  top: 50%;
+.welcome {
+  top: 45%;
   margin-top: -100px;
+}
+.game {
+  top: 10%;
+  height: 90%;
 }
 
 .contribute {
@@ -55,4 +57,21 @@ button#home {
   position: absolute;
   top: 2%;
   left: 43%;
+}
+
+@media only screen and (max-width: 636px) {
+  .game {
+    top: 7%;
+  }
+  .contribute {
+    top: 10%;
+  }
+  button#home {
+    width: 30%;
+    height: 5%;
+    padding: 0;
+    position: absolute;
+    top: 2%;
+    left: 35%;
+  }
 }

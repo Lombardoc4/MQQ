@@ -5,7 +5,7 @@ import axios from "axios";
 import Modal from "./modal.component";
 
 import "./admin.css";
-const LOCALIP = "http://10.24.104.148:8080";
+const LOCALIP = "http://192.168.1.5:8080";
 
 // how can we get a rerender on delete or edit?
 // use omdbAPI to make req for posters and year.
@@ -59,7 +59,6 @@ class AdminPanel extends React.Component {
 
   flipTable() {
     var side = this.state.side;
-    console.log(side);
     if (side === "Confirmed") {
       $(".confirmed").show();
       $(".verify").hide();
@@ -114,37 +113,40 @@ class AdminPanel extends React.Component {
 
     return (
       <div>
-        <div class="holder">
-          <button class="btn btn-info float-right m-3" onClick={this.flipTable}>
+        <div class="main">
+          <button class="btn flipper btn-primary" onClick={this.flipTable}>
             View {this.state.side}
           </button>
+          <div class="holder">
+            <div class="p-3 verify">
+              <h1 class="a title mb-0"> Please verify quotes </h1>
+              <table className="table table-hover table-sm">
+                <thead>
+                  <tr>
+                    <th>Total Quotes: {this.state.verifyLength}</th>
+                  </tr>
+                </thead>
+                <tbody>{table}</tbody>
+              </table>
+            </div>
 
-          <div class="p-4 verify">
-            <h1 class="a title mb-0"> Please verify quotes </h1>
-            <table className="mt-0 table table-hover">
-              <thead>
-                <tr>
-                  <th>Total Quotes: {this.state.verifyLength}</th>
-                </tr>
-              </thead>
-              <tbody>{table}</tbody>
-            </table>
-          </div>
-
-          <div class="p-4 confirmed">
-            <h2 class="a title mb-0"> Need to edit any quotes? </h2>
-            <table className="mt-0 table table-hover">
-              <thead>
-                <tr>
-                  <th>
-                    Total Quotes: {this.state.confirmedLength}
-                    <hr />
-                    Search by film
-                  </th>
-                </tr>
-              </thead>
-              <tbody>{table}</tbody>
-            </table>
+            <div class="p-3 confirmed">
+              <h2 class="a title mb-0"> Need to edit any quotes? </h2>
+              <table className="mt-0 table table-hover table-sm">
+                <thead>
+                  <tr>
+                    <th>
+                      Search by film
+                      <hr
+                        style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}
+                      />
+                      Total Quotes: {this.state.confirmedLength}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>{table}</tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div onClick={this.closeModal} class="background"></div>
@@ -180,23 +182,24 @@ function Verify(props) {
       <div class="d-flex justify-content-center">
         <h1 class="title admin font-italic">"{props.verify.quote}"</h1>
       </div>
-      <div class="d-flex justify-content-center align-middle">
-        <h1 class="title admin pr-4">Title: {props.verify.title}</h1>
-        <button
-          class="btn btn-light btnz"
-          onClick={() => props.openModal(props.verify)}
-        >
-          Confirm
-        </button>
-        <p class="pl-4" onClick={() => deleteQuote(props.verify._id)}>
-          <img
-            src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png"
-            alt="..."
-            class="trash"
-          />
-        </p>
+      <div class="lowerHalf">
+        <div class="buttonGroup">
+          <button
+            class="btn btn-info btnz"
+            onClick={() => props.openModal(props.verify)}
+          >
+            Confirm
+          </button>
+          <p class="pl-4" onClick={() => deleteQuote(props.verify._id)}>
+            <img
+              src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png"
+              alt="..."
+              class="trash"
+            />
+          </p>
+        </div>
       </div>
-      <hr />
+      <hr style={{ marginTop: "0" }} />
     </div>
   );
 }
@@ -223,23 +226,24 @@ function Confirmed(props) {
       <div class="d-flex justify-content-center">
         <h1 class="title admin font-italic">"{props.confirmed.quote}"</h1>
       </div>
-      <div class="d-flex justify-content-center align-middle">
-        <h1 class="title admin pr-4">Title: {props.confirmed.title}</h1>
-        <button
-          class="btn btn-light btnz"
-          onClick={() => props.openModal(props.confirmed)}
-        >
-          Confirm
-        </button>
-        <p class="pl-4" onClick={() => deleteQuote(props.confirmed._id)}>
-          <img
-            src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png"
-            alt="..."
-            class="trash"
-          />
-        </p>
+      <div class="lowerHalf">
+        <div class="buttonGroup">
+          <button
+            class="btn btn-info btnz"
+            onClick={() => props.openModal(props.confirmed)}
+          >
+            Confirm
+          </button>
+          <p class="pl-4" onClick={() => deleteQuote(props.confirmed._id)}>
+            <img
+              src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png"
+              alt="..."
+              class="trash"
+            />
+          </p>
+        </div>
       </div>
-      <hr />
+      <hr style={{ marginTop: "0" }} />
     </div>
   );
 }

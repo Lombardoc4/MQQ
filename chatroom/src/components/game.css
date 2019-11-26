@@ -1,7 +1,11 @@
 .quote {
-  font-family: "Atomic Age"; /* Google Font */
   max-width: 75%;
   text-align: center;
+}
+
+.main {
+  max-width: 860px;
+  margin: auto;
 }
 
 .question {
@@ -35,10 +39,6 @@
   height: 225px;
 }
 
-.lower {
-  top: 50%;
-}
-
 .poster.clip {
   width: 400px;
 }
@@ -47,4 +47,68 @@
   display: none;
   width: 50px;
   height: 50px;
+  padding: 5px;
+}
+
+@media only screen and (max-width: 636px) {
+  .quote {
+    font-size: 150%;
+  }
+  .stationaryBottom {
+    position: absolute;
+    top: 50%;
+    margin-top: -5rem;
+    max-width: 100%;
+  }
+
+  .result {
+    width: 30px;
+    height: 30px;
+  }
+  .poster.film,
+  .poster.char {
+    width: 125px;
+    height: 175px;
+  }
+  .poster.film.answer,
+  .poster.char.answer {
+    width: 0;
+    opacity: 0;
+    transition: opacity 2s;
+  }
+  .question {
+    padding-right: 5px;
+    color: #000;
+    font-weight: 150;
+    font-size: 150%;
+  }
+  .question.red {
+    color: red;
+  }
+  .question.green {
+    color: green;
+  }
+
+  .titleInput,
+  .answerOutput,
+  .inputContri {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #000;
+    text-align: center;
+    width: 300px;
+    font-size: 100%;
+    font-weight: 300;
+  }
+
+  .answerOutput {
+    font-size: 100%;
+    font-weight: 300;
+    width: 200px;
+    overflow-x: scroll;
+  }
+
+  .poster {
+    display: none;
+  }
 }

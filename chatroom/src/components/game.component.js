@@ -4,7 +4,7 @@ import axios from "axios";
 import ReactPlayer from "react-player";
 import "./game.css";
 
-const LOCALIP = "http://10.24.104.148:8080";
+const LOCALIP = "http://192.168.1.5:8080";
 // change answer box answerInput color
 // resultIndicators still broken
 
@@ -63,10 +63,10 @@ class Game extends React.Component {
 
   gameShift(e) {
     if (e === "down") {
-      $(".game").css({ top: "10%", marginTop: "0" });
+      $(".game").css({ top: "7%", marginTop: "0rem" });
     }
     if (e === "up") {
-      $(".game").css({ top: "50%", marginTop: "-2em" });
+      $(".game").css({ top: "50%", marginTop: "-2.5em" });
     }
   }
 
@@ -76,6 +76,8 @@ class Game extends React.Component {
 
     if (stage <= 3) {
       var input = this.state.input.toUpperCase();
+      // this needs to be asynced or else will break because no value
+      // if this.state.answers doesnt load before hitting next, BREAKS
       var answer = this.state.answers[stage - 1].toUpperCase();
 
       if (input === answer) {
@@ -91,7 +93,6 @@ class Game extends React.Component {
       if (stage === 1) {
         $(".stage1").fadeIn();
         $(".film").fadeIn();
-        this.gameShift("down");
       }
       if (stage === 2) {
         $(".stage2").fadeIn();
@@ -99,31 +100,40 @@ class Game extends React.Component {
       }
       if (stage === 3) {
         $(".stage3").fadeIn();
-        $(".clip").fadeIn();
+
+        $(".clip").fadeIn(1000);
+        $(".poster.film").addClass("answer");
+        $(".poster.clip").addClass("answer");
+        $(".poster.char").addClass("answer");
       }
       this.setState(state => {
         state.answerInputs.push(state.input);
       });
       stage++;
     } else {
-      $(".stage1").hide(1);
-      $(".stage2").hide(1);
-      $(".stage3").hide(1);
-      $(".clip").fadeOut(1);
-      $(".char").fadeOut();
-      $(".film").fadeOut(() => {
-        this.gameShift("up");
+      $(".poster.film").removeClass("answer");
+      $(".poster.clip").removeClass("answer");
+      $(".poster.char").removeClass("answer");
+      $(".stage1").hide();
+      $(".stage2").hide();
+      $(".stage3").hide();
+      $(".film").hide();
+      $(".char").hide();
+      $(".clip").hide(() => {
         this.setQuote();
       });
-
       $(".quote").fadeOut();
       $(".quote").fadeIn(1000);
 
       stage = 1;
-
-      this.setState({ answerInputs: [], results: [] });
+      this.setState({
+        answerInputs: [],
+        results: [],
+        answers: []
+      });
     }
     this.setState({ stage: stage, input: "" });
+    console.log(this.state.answers);
   }
 
   render() {
@@ -153,19 +163,17 @@ class Game extends React.Component {
     }
 
     return (
-      <div>
+      <div class="main">
         <ImageBox
           film={this.state.filmPoster}
           char={this.state.charPoster}
           clip={this.state.clipLink}
         />
-        <div class="w-100"></div>
-        <ResultBox stage={stage} results={this.state.results} />
-        <div class="lower">
+        <div class="stationaryBottom">
           <h2 class="quote mx-auto">{this.state.quote}</h2>
-
           {form}
 
+          <ResultBox stage={stage} results={this.state.results} />
           <Controller nextStage={this.nextStage} name={button} />
         </div>
       </div>
@@ -191,28 +199,25 @@ function ResultBox(props) {
 
   return (
     <div class="d-flex justify-content-center">
-      <img src={resultImg[0]} alt="..." class="result stage1 p-2" />
-      <img src={resultImg[1]} alt="..." class="result stage2 p-2" />
-      <img src={resultImg[2]} alt="..." class="result stage3 p-2" />
+      <img src={resultImg[0]} alt="..." class="result stage1" />
+      <img src={resultImg[1]} alt="..." class="result stage2" />
+      <img src={resultImg[2]} alt="..." class="result stage3" />
     </div>
   );
 }
 
 function ImageBox(props) {
+  var height = document.querySelector(".poster.clip.answer");
+  if (height) {
+    console.log("success");
+  } else {
+    console.log(height);
+  }
+
   return (
     <div class="d-flex justify-content-center">
-      <img
-        src={props.film}
-        width="3em"
-        alt="..."
-        class="poster film p-2 img-fluid"
-      />
-      <ReactPlayer
-        url={props.clip}
-        min-width="20em"
-        height="14em"
-        class="poster clip p-2"
-      />
+      <img src={props.film} alt="..." class="poster film p-2" />
+      <ReactPlayer url={props.clip} height="13.5rem" class="poster clip pt-2" />
       <img
         src={props.char}
         width="3em"
@@ -227,22 +232,20 @@ function QuestionBox(props) {
   // decide if form or game is going to be component
   // one has to get data and then maybe use the form component to fill out using of course props
   return (
-    <div class="">
-      <div class="form p-0 d-flex justify-content-center">
-        <h3 class="question pr-2">{props.question}: </h3>
-
-        <input
-          class="titleInput"
-          value={props.input}
-          onChange={props.onInput}
-          type="text"
-        />
-      </div>
+    <div class="form justify-content-center">
+      <h3 class="question">{props.question}: </h3>
+      <input
+        class="titleInput"
+        value={props.input}
+        onChange={props.onInput}
+        type="text"
+      />
     </div>
   );
 }
 
-var color = [];
+var inputColor = [];
+var titleColor = [];
 var allAnswers = [];
 
 function AnswerBox(props) {
@@ -252,17 +255,19 @@ function AnswerBox(props) {
   // this neeed to be cleaned up
   for (var i = 0; i < answerResults.length; i++) {
     if (answerResults[i]) {
-      color[i] = "status text-success";
+      inputColor[i] = "status text-success";
+      titleColor[i] = "question green";
     } else {
-      color[i] = "status text-danger";
+      titleColor[i] = "question red";
+      inputColor[i] = "status text-danger";
     }
     allAnswers[i] = (
-      <div class="form p-0 d-flex justify-content-center">
-        <h3 class="question pr-2">{props.question[i]}: </h3>
-        <p class="titleInput">
-          <span class={color[i]}>{props.answerInputs[i]}</span>|
-          <span class="text-success">{props.answers[i]}</span>
-        </p>
+      <div class="form p-0 d-flex align-items-center justify-content-center">
+        <h3 class={titleColor[i]}>{props.question[i]}: </h3>
+        <div class="answerOutput d-flex flex-column">
+          <span class={inputColor[i]}>{props.answerInputs[i]}</span>
+          <span class="border-top text-success">{props.answers[i]}</span>
+        </div>
       </div>
     );
   }
@@ -275,14 +280,14 @@ function Controller(props) {
 
   if (stage === "New") {
     return (
-      <button onClick={props.nextStage} class="btn btn-primary m-4">
+      <button onClick={props.nextStage} class="btn btn-success m-2">
         {props.name}
       </button>
     );
   }
 
   return (
-    <button onClick={props.nextStage} class="btn btn-success m-4">
+    <button onClick={props.nextStage} class="btn btn-primary m-2">
       {props.name}
     </button>
   );

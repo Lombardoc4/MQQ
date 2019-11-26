@@ -3,7 +3,9 @@ import $ from "jquery";
 import axios from "axios";
 import ReactPlayer from "react-player";
 
-const LOCALIP = "http://10.24.104.148:8080";
+import "./modal.css";
+
+const LOCALIP = "http://192.168.1.5:8080";
 
 // how ccan we get a rerender on delete or edit?
 // use omdbAPI to make req for posters and year.
@@ -64,21 +66,35 @@ class Modal extends React.Component {
       $(".form1")[i].classList.remove("d-none");
     }
     $(".form2").fadeOut();
+    $(".form3").fadeOut();
     $(".success").hide();
   };
 
   // issuew with the image/film poster updating
   loadQuote = () => {
     this.setState((state, props) => {
-      return {
-        quote: this.props.data.quote,
-        title: this.props.data.title,
-        character: this.props.data.character,
-        year: this.props.data.year,
-        clipLink: this.props.data.clipLink,
-        filmPoster: this.props.data.filmPoster,
-        charPoster: this.props.data.charPoster
-      };
+      if (typeof this.props.data.filmPoster === "undefined") {
+        return {
+          quote: this.props.data.quote,
+          title: this.props.data.title,
+          character: this.props.data.character,
+          year: this.props.data.year,
+          clipLink: this.props.data.clipLink,
+          filmPoster: "https://via.placeholder.com/150x200",
+          charPoster: "https://via.placeholder.com/150x200"
+        };
+      } else {
+        return {
+          quote: this.props.data.quote,
+          title: this.props.data.title,
+          character: this.props.data.character,
+          year: this.props.data.year,
+          clipLink: this.props.data.clipLink,
+          filmPoster: this.props.data.filmPoster,
+          charPoster: this.props.data.charPoster
+        };
+      }
+      // the variable is defined
     });
   };
 
@@ -162,12 +178,10 @@ class Modal extends React.Component {
               console.log(error);
             })
             .then(console.log("verify removed"));
-          console.log("confirmed");
         });
     }
     // side is opposite because setState is behind?
     if (this.props.side === "Verify") {
-      console.log("this");
       //  send to db
       serverLocation =
         LOCALIP + "/verifymyguy/confirmed/edit/" + this.props.data._id;
@@ -194,6 +208,7 @@ class Modal extends React.Component {
 
   nextStage() {
     var stage = this.state.stage;
+    console.log(stage);
     if (stage === 1) {
       if (!this.validateForm()) {
         $(".failure").fadeIn();
@@ -204,16 +219,34 @@ class Modal extends React.Component {
       for (var i = 0; i < $(".form1").length; i++) {
         $(".form1")[i].classList.add("d-none");
       }
+      for (i = 0; i < $(".form2").length; i++) {
+        $(".form2")[i].classList.remove("d-none");
+      }
       $(".form2").fadeIn();
       this.setState({
         stage: 2
+      });
+    }
+    if (stage === 2) {
+      if (!this.validateForm()) {
+        $(".failure").fadeIn();
+        return false;
+      }
+      $(".failure").hide();
+
+      for (i = 0; i < $(".form2").length; i++) {
+        $(".form2")[i].classList.add("d-none");
+      }
+      $(".form3").fadeIn();
+      this.setState({
+        stage: 3
       });
     }
   }
 
   render() {
     var controller;
-    if (this.state.stage === 2) {
+    if (this.state.stage === 3) {
       controller = (
         <Controller
           closeQuote={this.props.submit}
@@ -233,19 +266,31 @@ class Modal extends React.Component {
 
     return (
       <div id="outer">
-        <p class="submission text-success">Thank you for your submission</p>
+        <p class="submission text-success">Thank you for your confirmation</p>
         <p class="failure text-danger">Please provide all the information</p>
-        <div class="form1">
-          <div class="form d-flex justify-content-center">
-            <ReactPlayer
-              url={this.props.data.clipLink}
-              width="400px"
-              height="225px"
-              class="clip p-2"
+        <div class="form1 forms justify-content-center">
+          <ReactPlayer
+            url={this.props.data.clipLink}
+            width="100%"
+            height="100%"
+            class="clip p-2"
+          />
+          <div class="form contri justify-content-center">
+            <h3 class="question">
+              ClipLink:{" "}
+              <button class="btn helper btn-danger text-white">
+                Search Youtube
+              </button>
+            </h3>
+            <input
+              value={this.props.data.clipLink}
+              class="inputContri"
+              onChange={this.handleLink}
+              type="text"
             />
           </div>
-          <div class="form contri d-flex justify-content-center">
-            <h3 class="question pr-2">Quote: </h3>
+          <div class="form contri justify-content-center">
+            <h3 class="question">Quote: </h3>
             <textarea
               value={this.props.data.quote}
               class="inputContri"
@@ -253,8 +298,38 @@ class Modal extends React.Component {
               type="text"
             />
           </div>
+        </div>
+        <div
+          style={{
+            display: "none"
+          }}
+          class="form2 forms"
+        >
+          <div class="justify-content-center">
+            <img
+              src={this.state.filmPoster + ""}
+              class="img-fluid mr-auto"
+              id="img-upload"
+              width="150px"
+              height="200px"
+              alt=""
+            />
+          </div>
+          <div class="form contri justify-content-center">
+            <h3 class="question">
+              Film Poster:{" "}
+              <button class="btn helper btn-warning">Search IMDb</button>
+            </h3>
+            <input
+              value={this.state.filmPoster}
+              onChange={this.handleFilmposter}
+              class="inputContri col-md-6"
+              type="text"
+              id="film"
+            />
+          </div>
           <div class="form contri d-flex justify-content-center">
-            <h3 class="question pr-2">Title: </h3>
+            <h3 class="question">Title: </h3>
             <input
               value={this.props.data.title}
               class="inputContri"
@@ -264,7 +339,7 @@ class Modal extends React.Component {
             />
           </div>
           <div class="form contri d-flex justify-content-center">
-            <h3 class="question pr-2">Character: </h3>
+            <h3 class="question">Character: </h3>
             <input
               value={this.props.data.character}
               class="inputContri"
@@ -274,7 +349,7 @@ class Modal extends React.Component {
             />
           </div>
           <div class="form contri d-flex justify-content-center">
-            <h3 class="question pr-2">Year: </h3>
+            <h3 class="question">Year:</h3>
             <input
               value={this.props.data.year}
               class="inputContri"
@@ -283,74 +358,42 @@ class Modal extends React.Component {
               maxLength="4"
             />
           </div>
-          <div class="form contri d-flex justify-content-center">
-            <h3 class="question pr-2">Reference Link: </h3>
-            <input
-              value={this.props.data.clipLink}
-              class="inputContri"
-              onChange={this.handleLink}
-              type="text"
-            />
-          </div>
         </div>
         <div
           style={{ display: "none" }}
-          class="form2 contri p-2 justify-content-center"
+          class="form3 forms contri p-2 justify-content-center"
         >
-          <div class="row">
-            <div class="col-md-6">
-              <h1>{this.props.data.title}</h1>
-            </div>
-            <div class="col-md-6">
-              <h1>{this.props.data.character}</h1>
-            </div>
+          <div class="justify-content-center">
+            <img
+              src={this.state.charPoster + ""}
+              class="img-fluid mr-auto"
+              id="img-upload"
+              width="150px"
+              height="200px"
+              alt=""
+            />
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <img
-                src={this.state.filmPoster}
-                class="img-fluid mr-auto"
-                id="img-upload"
-                width="150px"
-                height="200px"
-                alt=""
-              />
-            </div>
-            <div class="col-md-6">
-              <img
-                src={this.state.charPoster}
-                class="img-fluid mr-auto"
-                id="img-upload"
-                width="150px"
-                height="200px"
-                alt=""
-              />
-            </div>
+          <div class="form contri justify-content-center">
+            <h3 class="question">
+              ActorPoster:
+              <button class="btn helper btn-light text-success">Google</button>
+            </h3>
+            <input
+              value={this.state.charPoster + ""}
+              class="inputContri"
+              onChange={this.handleCharposter}
+              type="text"
+              maxLength="20"
+            />
           </div>
-          <div class="row">
-            <span class="col-md-6">
-              {" "}
-              Upload Film Image
-              <input
-                value={this.state.filmPoster}
-                onChange={this.handleFilmposter}
-                class="inputContri col-md-6"
-                type="text"
-                id="film"
-              />
-            </span>
-
-            <span class="col-md-6">
-              {" "}
-              Upload Character Image
-              <input
-                value={this.state.charPoster}
-                onChange={this.handleCharposter}
-                class="inputContri col-md-6"
-                type="text"
-                id="char"
-              />
-            </span>
+          <div class="form contri justify-content-center">
+            <h3 class="question">Quote: </h3>
+            <textarea
+              value={this.props.data.quote}
+              class="inputContri"
+              onChange={this.handleQuote}
+              type="text"
+            />
           </div>
         </div>
         {controller}
@@ -363,28 +406,28 @@ export default Modal;
 
 function Controller(props) {
   var stage = props.stage;
-  var button;
+  var button, helper;
 
-  if (stage === 2) {
+  if (stage === 3) {
     button = (
-      <button onClick={props.nextStage} class="btn btn-success m-4">
+      <button onClick={props.nextStage} class="btn control btn-success m-1">
         Confirm
       </button>
     );
   } else {
     button = (
-      <button onClick={props.nextStage} class="btn btn-primary m-4">
+      <button onClick={props.nextStage} class="btn control btn-primary m-1">
         Next
       </button>
     );
   }
 
   return (
-    <div>
-      <button onClick={props.closeQuote} class="btn btn-warning m-4">
+    <div class="btnbox">
+      {button}
+      <button onClick={props.closeQuote} class="btn control btn-warning m-1">
         Cancel
       </button>
-      {button}
     </div>
   );
 }

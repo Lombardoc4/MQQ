@@ -12,6 +12,11 @@ button.btnz {
   padding: 0;
 }
 
+.btn.flipper {
+  float: right;
+  margin: 15px;
+}
+
 .tr {
   border: 4px solid green !important;
 }
@@ -20,10 +25,11 @@ button.btnz {
   background-color: #fff;
   display: none;
   position: fixed;
-  top: 5%;
-  left: 12%;
+  top: 10%;
+  left: 20%;
   text-align: center;
-  width: 75%;
+  width: 60%;
+  height: 80%;
   z-index: 10;
   padding: 1rem;
   border-radius: 50px;
@@ -48,4 +54,55 @@ button.btnz {
 
 .title.admin {
   font-size: 150%;
+}
+.lowerHalf {
+  display: flex;
+  justify-content: center;
+  align: middle;
+}
+.buttonGroup {
+  display: inherit;
+}
+
+@media only screen and (max-width: 636px) {
+  .a.title {
+    font-size: 150%;
+  }
+  .title.admin {
+    font-size: 100%;
+  }
+  .btn.flipper {
+    width: 50%;
+    height: 5%;
+    padding: 0;
+    position: absolute;
+    left: 20%;
+  }
+  .holder {
+    position: absolute;
+    top: 7%;
+  }
+
+  .lowerHalf {
+    display: block;
+    width: 50%;
+    margin: auto;
+  }
+  .buttonGroup {
+    display: flex;
+  }
+
+  .editModal {
+    background-color: #fff;
+    display: none;
+    position: fixed;
+    top: 2.5%;
+    left: 5%;
+    text-align: center;
+    width: 90%;
+    height: 95%;
+    z-index: 10;
+    padding: 1rem;
+    border-radius: 0px;
+  }
 }
