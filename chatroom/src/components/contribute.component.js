@@ -3,7 +3,8 @@ import axios from "axios";
 import $ from "jquery";
 import "./contribute.css";
 
-const LOCALIP = "http://192.168.1.5:8080";
+const LOCALHOST = process.env.REACT_APP_SERVER_IP;
+const LOCALIP = "http://" + LOCALHOST + ":8080";
 // gotta to reset the text after submit
 
 function Controller(props) {

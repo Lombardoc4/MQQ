@@ -4,7 +4,8 @@ import axios from "axios";
 import ReactPlayer from "react-player";
 import "./game.css";
 
-const LOCALIP = "http://192.168.1.5:8080";
+const LOCALHOST = process.env.REACT_APP_SERVER_IP;
+const LOCALIP = "http://" + LOCALHOST + ":8080";
 // change answer box answerInput color
 // resultIndicators still broken
 
@@ -16,7 +17,7 @@ class Game extends React.Component {
     super(props);
     this.state = {
       stage: 1,
-      questions: ["Title", "Character", "Year"],
+      questions: ["Title", "Actor", "Year"],
       quote: "",
       answers: [],
       filmPoster: "",
@@ -35,6 +36,7 @@ class Game extends React.Component {
   }
 
   setQuote() {
+    console.log(process.env.REACT_APP_SERVER_IP);
     var serverLocation = LOCALIP + "/play";
     axios
       .get(serverLocation)
@@ -217,7 +219,9 @@ function ImageBox(props) {
   return (
     <div class="d-flex justify-content-center">
       <img src={props.film} alt="..." class="poster film p-2" />
-      <ReactPlayer url={props.clip} height="13.5rem" class="poster clip pt-2" />
+      <div class="poster clip">
+        <ReactPlayer url={props.clip} height="100%" class="poster clip pt-2" />
+      </div>
       <img
         src={props.char}
         width="3em"

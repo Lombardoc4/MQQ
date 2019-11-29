@@ -10,7 +10,7 @@
 
 .question {
   color: #000;
-  font-weight: 100;
+  font-weight: 300;
 }
 
 .titleInput,
@@ -20,9 +20,8 @@
   outline: none;
   border-bottom: 1px solid #000;
   text-align: center;
-  width: 300px;
   font-size: 150%;
-  font-weight: 100;
+  font-weight: 300;
 }
 
 .answerOutput {
@@ -37,10 +36,12 @@
 .poster.char {
   width: 150px;
   height: 225px;
+  margin-top: 0.5rem;
 }
 
 .poster.clip {
-  width: 400px;
+  max-width: 375px;
+  margin: auto;
 }
 
 .result {
@@ -76,6 +77,11 @@
     opacity: 0;
     transition: opacity 2s;
   }
+  .poster.clip {
+    max-width: 90%;
+    margin: auto;
+  }
+
   .question {
     padding-right: 5px;
     color: #000;

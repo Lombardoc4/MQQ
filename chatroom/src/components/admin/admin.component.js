@@ -5,7 +5,8 @@ import axios from "axios";
 import Modal from "./modal.component";
 
 import "./admin.css";
-const LOCALIP = "http://192.168.1.5:8080";
+const LOCALHOST = process.env.REACT_APP_SERVER_IP;
+const LOCALIP = "http://" + LOCALHOST + ":8080";
 
 // how can we get a rerender on delete or edit?
 // use omdbAPI to make req for posters and year.
