@@ -1,4 +1,11 @@
 @media only screen and (max-width: 636px) {
+  .forms {
+    position: absolute;
+    width: 90%;
+    height: 30%;
+    top: 5%;
+    left: 5%;
+  }
   .btnbox {
     position: absolute;
     bottom: 10%;

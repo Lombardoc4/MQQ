@@ -29,6 +29,7 @@ class Game extends React.Component {
     };
     this.nextStage = this.nextStage.bind(this);
     this.handleInput = this.handleInput.bind(this);
+    this.keyPress = this.keyPress.bind(this);
   }
 
   componentDidMount() {
@@ -63,12 +64,10 @@ class Game extends React.Component {
     this.setState({ input: e.target.value });
   }
 
-  gameShift(e) {
-    if (e === "down") {
-      $(".game").css({ top: "7%", marginTop: "0rem" });
-    }
-    if (e === "up") {
-      $(".game").css({ top: "50%", marginTop: "-2.5em" });
+  keyPress(e) {
+    if (e.keyCode == 13) {
+      this.nextStage();
+      // put the login here
     }
   }
 
@@ -147,6 +146,7 @@ class Game extends React.Component {
         <QuestionBox
           input={this.state.input}
           onInput={this.handleInput}
+          keyPress={this.keyPress}
           question={this.state.questions[stage - 1]}
         />
       );
@@ -236,11 +236,12 @@ function QuestionBox(props) {
   // decide if form or game is going to be component
   // one has to get data and then maybe use the form component to fill out using of course props
   return (
-    <div class="form justify-content-center">
+    <div class="form contri justify-content-center">
       <h3 class="question">{props.question}: </h3>
       <input
         class="titleInput"
         value={props.input}
+        onKeyDown={props.keyPress}
         onChange={props.onInput}
         type="text"
       />

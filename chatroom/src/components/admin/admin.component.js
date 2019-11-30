@@ -200,7 +200,7 @@ function Verify(props) {
           </p>
         </div>
       </div>
-      <hr style={{ marginTop: "0" }} />
+      <hr style={{ marginTop: "0", marginBottom: "0" }} />
     </div>
   );
 }
@@ -244,7 +244,7 @@ function Confirmed(props) {
           </p>
         </div>
       </div>
-      <hr style={{ marginTop: "0" }} />
+      <hr style={{ marginTop: "0", marginBottom: "0" }} />
     </div>
   );
 }

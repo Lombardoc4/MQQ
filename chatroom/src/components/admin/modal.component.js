@@ -195,6 +195,7 @@ class Modal extends React.Component {
     $(".submission").fadeIn(1000, () => {
       this.props.submit();
     });
+    $(".submission").fadeOut();
 
     this.setState({
       quote: "",
@@ -324,32 +325,30 @@ class Modal extends React.Component {
             <input
               value={this.state.filmPoster}
               onChange={this.handleFilmposter}
-              class="inputContri col-md-6"
+              class="inputContri"
               type="text"
               id="film"
             />
           </div>
-          <div class="form contri d-flex justify-content-center">
+          <div class="form contri d-flex">
             <h3 class="question">Title: </h3>
             <input
               value={this.props.data.title}
               class="inputContri"
               onChange={this.handleTitle}
               type="text"
-              maxLength="20"
             />
           </div>
-          <div class="form contri d-flex justify-content-center">
-            <h3 class="question">Character: </h3>
+          <div class="form contri d-flex">
+            <h3 class="question">Actor: </h3>
             <input
               value={this.props.data.character}
               class="inputContri"
               onChange={this.handleCharacter}
               type="text"
-              maxLength="20"
             />
           </div>
-          <div class="form contri d-flex justify-content-center">
+          <div class="form contri d-flex">
             <h3 class="question">Year:</h3>
             <input
               value={this.props.data.year}
@@ -362,7 +361,7 @@ class Modal extends React.Component {
         </div>
         <div
           style={{ display: "none" }}
-          class="form3 forms contri p-2 justify-content-center"
+          class="form3 forms contri justify-content-center"
         >
           <div class="justify-content-center">
             <img
@@ -385,15 +384,6 @@ class Modal extends React.Component {
               onChange={this.handleCharposter}
               type="text"
               maxLength="20"
-            />
-          </div>
-          <div class="form contri justify-content-center">
-            <h3 class="question">Quote: </h3>
-            <textarea
-              value={this.props.data.quote}
-              class="inputContri"
-              onChange={this.handleQuote}
-              type="text"
             />
           </div>
         </div>

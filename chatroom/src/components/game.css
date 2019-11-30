@@ -58,8 +58,9 @@
   .stationaryBottom {
     position: absolute;
     top: 50%;
+    left: 5%;
     margin-top: -5rem;
-    max-width: 100%;
+    max-width: 90%;
   }
 
   .result {
