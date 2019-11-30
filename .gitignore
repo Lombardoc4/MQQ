@@ -14,8 +14,8 @@
 
 # misc
 .DS_Store
-./chatBack/.env
-./chatroom/.env.development
+/chatBack/.env
+/chatroom/.env.development
 .env
 .env.local
 .env.development.local
