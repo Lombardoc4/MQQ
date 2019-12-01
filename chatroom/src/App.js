@@ -1,129 +1,56 @@
 import React from "react";
-import $ from "jquery";
-import {
-  withRouter,
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import { withRouter, Switch, Route, Link } from "react-router-dom";
 
-import Game from "./components/game.component";
-import Contribute from "./components/contribute.component";
-import AdminPanel from "./components/admin/admin.component";
+import Game from "./views/game";
+import Contribute from "./views/contribute";
+import Home from "./views/home";
+import AdminOld from "./components/admin/admin.component";
 
-import "./App.css";
+import "./App.scss";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: ""
-    };
-    this.play = this.play.bind(this);
-    this.contribute = this.contribute.bind(this);
-    this.home = this.home.bind(this);
-  }
-
-  play(e) {
-    $(".welcome").fadeOut(600);
-    $(".game").fadeIn(1500);
-    $("#home").fadeIn();
-  }
-  contribute(e) {
-    $(".welcome").fadeOut(600);
-    $(".game").fadeIn(1500);
-    $("#home").fadeIn();
-  }
-  home(e) {
-    $(".welcome").show();
-    $(".game").hide();
-    $("#home").hide();
-  }
-
+const App = () => {
   // be aware that fast transitions from home to game and vice versa
   // will cause the whole template to be come display:none
   // maybe disable buttons
-
-  render() {
-    return (
-      <Router>
-        <div>
-          <Switch>
-            <Route path="/cris">
-              <AdminPanel />
-            </Route>
-            <Route path="/play">
-              <Outline
-                action="game"
-                home={this.home}
-                gameShift={this.gameShift}
-              />
-            </Route>
-            <Route path="/contribute">
-              <Outline action="contribute" home={this.home} />
-            </Route>
-            <Route path="/">
-              <Home play={this.play} contribute={this.contribute} />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
-    );
-  }
-}
+  return (
+    <Switch>
+      <Route
+        exact
+        path="/cris"
+        render={props => (
+          <Home location="admin" title="MQQ Admin" btn1="Verify" btn2="Edit" />
+        )}
+      />
+      <Route
+        exact
+        path="/cris/verify"
+        render={props => <AdminOld type="verify" />}
+      />
+      <Route
+        exact
+        path="/cris/edit"
+        render={props => <AdminOld type="edit" />}
+      />
+      <Route path="/play">
+        <Game />
+      </Route>
+      <Route path="/contribute">
+        <Contribute />
+      </Route>
+      <Route
+        exact
+        path="/"
+        render={props => (
+          <Home
+            location="home"
+            title="Welcome to Movie Quote Quiz"
+            btn1="Play"
+            btn2="Contribute"
+          />
+        )}
+      />
+    </Switch>
+  );
+};
 
 export default withRouter(App);
-
-function Home(props) {
-  return (
-    <div class="welcome page">
-      <h2 class="title">Welcome to Movie Quote Quiz</h2>
-      <Link to="/play">
-        <button onClick={props.play} class="btn btn-success btn-lg m-3">
-          Play
-        </button>
-      </Link>
-      <Link to="/contribute">
-        <button onClick={props.contribute} class="btn btn-primary btn-lg m-3">
-          Contribute
-        </button>
-      </Link>
-    </div>
-  );
-}
-
-function Outline(props) {
-  var action = props.action;
-  if (action === "game") {
-    action = (
-      <div class="game page">
-        <Game />
-      </div>
-    );
-  }
-  if (action === "contribute") {
-    action = (
-      <div class="contribute page">
-        <Contribute />
-      </div>
-    );
-  }
-
-  return (
-    <div class="d-flex flex-column justify-content-center">
-      {action}
-      <div class="home">
-        <Link to="/">
-          <button
-            onClick={props.home}
-            class="btn btn-outline-secondary"
-            id="home"
-          >
-            Home
-          </button>
-        </Link>
-      </div>
-    </div>
-  );
-}

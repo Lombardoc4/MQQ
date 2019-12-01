@@ -1,10 +1,12 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
+import { Link } from "react-router-dom";
 import $ from "jquery";
 import axios from "axios";
-
-import Modal from "./modal.component";
-
 import "./admin.css";
+import Modal from "./modal.component";
+const Verify = React.lazy(() => import("./verify.component"));
+const Edit = React.lazy(() => import("./edit.component"));
+
 const LOCALHOST = process.env.REACT_APP_SERVER_IP;
 const LOCALIP = "http://" + LOCALHOST + ":8080";
 
@@ -31,30 +33,35 @@ class AdminPanel extends React.Component {
   }
 
   componentDidMount() {
-    var serverLocation = LOCALIP + "/verifymyguy/verify";
-    axios
-      .get(serverLocation)
-      .then(res => {
-        this.setState({
-          verify: res.data,
-          verifyLength: res.data.length
+    if (this.props.type === "verify") {
+      console.log(this.props);
+      var serverLocation = LOCALIP + "/verifymyguy/verify";
+      axios
+        .get(serverLocation)
+        .then(res => {
+          this.setState({
+            verify: res.data,
+            verifyLength: res.data.length
+          });
+        })
+        .catch(function(error) {
+          console.log(error);
         });
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    serverLocation = LOCALIP + "/verifymyguy/confirmed";
-    axios
-      .get(serverLocation)
-      .then(res => {
-        this.setState({
-          confirmed: res.data,
-          confirmedLength: res.data.length
+    }
+    if (this.props.type === "edit") {
+      serverLocation = LOCALIP + "/verifymyguy/confirmed";
+      axios
+        .get(serverLocation)
+        .then(res => {
+          this.setState({
+            confirmed: res.data,
+            confirmedLength: res.data.length
+          });
+        })
+        .catch(function(error) {
+          console.log(error);
         });
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    }
     this.flipTable();
   }
 
@@ -86,28 +93,46 @@ class AdminPanel extends React.Component {
   }
 
   render() {
-    var table;
+    var table, link;
     if (this.state.side === "Confirmed") {
+      link = (
+        <Link to="/cris/verify">
+          <button class="btn flipper btn-primary">
+            View {this.state.side}
+          </button>
+        </Link>
+      );
       table = this.state.verify.map((currentQuote, quote) => {
         return (
-          <Verify
-            side={this.state.side}
-            openModal={this.openModal}
-            verify={currentQuote}
-            key={quote._id}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Verify
+              side={this.state.side}
+              openModal={this.openModal}
+              verify={currentQuote}
+              key={quote._id}
+            />
+          </Suspense>
         );
       });
     }
     if (this.state.side === "Verify") {
+      link = (
+        <Link to="/cris/edit">
+          <button class="btn flipper btn-primary">
+            View {this.state.side}
+          </button>
+        </Link>
+      );
       table = this.state.confirmed.map((currentQuote, quote) => {
         return (
-          <Confirmed
-            side={this.state.side}
-            openModal={this.openModal}
-            confirmed={currentQuote}
-            key={quote._id}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Edit
+              side={this.state.side}
+              openModal={this.openModal}
+              confirmed={currentQuote}
+              key={quote._id}
+            />
+          </Suspense>
         );
       });
     }
@@ -115,9 +140,7 @@ class AdminPanel extends React.Component {
     return (
       <div>
         <div class="main">
-          <button class="btn flipper btn-primary" onClick={this.flipTable}>
-            View {this.state.side}
-          </button>
+          {link}
           <div class="holder">
             <div class="p-3 verify">
               <h1 class="a title mb-0"> Please verify quotes </h1>
@@ -139,7 +162,10 @@ class AdminPanel extends React.Component {
                     <th>
                       Search by film
                       <hr
-                        style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}
+                        style={{
+                          marginTop: "0.5rem",
+                          marginBottom: "0.5rem"
+                        }}
                       />
                       Total Quotes: {this.state.confirmedLength}
                     </th>
@@ -166,85 +192,4 @@ class AdminPanel extends React.Component {
 
 export default AdminPanel;
 
-function Verify(props) {
-  var deleteQuote = thisQuote => {
-    var serverLocation = LOCALIP + "/verifymyguy/verify/remove/" + thisQuote;
-    axios
-      .delete(serverLocation)
-      .catch(function(error) {
-        console.log(error);
-      })
-      .then(console.log("Quote denied!"));
-  };
-
-  return (
-    //create alert verification for deleting
-    <div class="pt-3">
-      <div class="d-flex justify-content-center">
-        <h1 class="title admin font-italic">"{props.verify.quote}"</h1>
-      </div>
-      <div class="lowerHalf">
-        <div class="buttonGroup">
-          <button
-            class="btn btn-info btnz"
-            onClick={() => props.openModal(props.verify)}
-          >
-            Confirm
-          </button>
-          <p class="pl-4" onClick={() => deleteQuote(props.verify._id)}>
-            <img
-              src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png"
-              alt="..."
-              class="trash"
-            />
-          </p>
-        </div>
-      </div>
-      <hr style={{ marginTop: "0", marginBottom: "0" }} />
-    </div>
-  );
-}
-
 //About is the wrong way it will create a modal on load for every quote not on click
-
-function Confirmed(props) {
-  var deleteQuote = thisQuote => {
-    var serverLocation = LOCALIP + "/verifymyguy/confirmed/remove/" + thisQuote;
-    axios
-      .delete(serverLocation)
-      .catch(function(error) {
-        console.log(error);
-      })
-      .then(console.log("Quote denied!"));
-  };
-
-  return (
-    // just return title and year
-    // on click load rest of information
-    // for confirm make edit page
-    // for verify make add picture page
-    <div class="pt-3">
-      <div class="d-flex justify-content-center">
-        <h1 class="title admin font-italic">"{props.confirmed.quote}"</h1>
-      </div>
-      <div class="lowerHalf">
-        <div class="buttonGroup">
-          <button
-            class="btn btn-info btnz"
-            onClick={() => props.openModal(props.confirmed)}
-          >
-            Confirm
-          </button>
-          <p class="pl-4" onClick={() => deleteQuote(props.confirmed._id)}>
-            <img
-              src="https://cdn2.iconfinder.com/data/icons/iconza-2/24/Trash-512.png"
-              alt="..."
-              class="trash"
-            />
-          </p>
-        </div>
-      </div>
-      <hr style={{ marginTop: "0", marginBottom: "0" }} />
-    </div>
-  );
-}

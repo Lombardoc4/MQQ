@@ -1,8 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import $ from "jquery";
 import axios from "axios";
 import ReactPlayer from "react-player";
-import "./game.css";
+import "./game.scss";
+
+import Controller from "../components/controller.component";
 
 const LOCALHOST = process.env.REACT_APP_SERVER_IP;
 const LOCALIP = "http://" + LOCALHOST + ":8080";
@@ -65,7 +68,7 @@ class Game extends React.Component {
   }
 
   keyPress(e) {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       this.nextStage();
       // put the login here
     }
@@ -104,8 +107,9 @@ class Game extends React.Component {
 
         $(".clip").fadeIn(1000);
         $(".poster.film").addClass("answer");
-        $(".poster.clip").addClass("answer");
         $(".poster.char").addClass("answer");
+        $(".stage1").hide();
+        $(".stage2").hide();
       }
       this.setState(state => {
         state.answerInputs.push(state.input);
@@ -113,11 +117,8 @@ class Game extends React.Component {
       stage++;
     } else {
       $(".poster.film").removeClass("answer");
-      $(".poster.clip").removeClass("answer");
       $(".poster.char").removeClass("answer");
-      $(".stage1").hide();
-      $(".stage2").hide();
-      $(".stage3").hide();
+
       $(".film").hide();
       $(".char").hide();
       $(".clip").hide(() => {
@@ -165,17 +166,35 @@ class Game extends React.Component {
     }
 
     return (
-      <div class="main">
-        <ImageBox
-          film={this.state.filmPoster}
-          char={this.state.charPoster}
-          clip={this.state.clipLink}
-        />
-        <div class="stationaryBottom">
-          <h2 class="quote mx-auto">{this.state.quote}</h2>
-          {form}
-
+      <div class="page main">
+        <div style={{ height: "10%" }}>
+          <Link to="/contribute">
+            <button
+              class="btn btn-outline-secondary"
+              style={{ marginTop: "1vh", padding: "1vh" }}
+            >
+              Contribute
+            </button>
+          </Link>
+        </div>
+        <div class="d-flex justify-content-center" style={{ height: "35%" }}>
+          <ImageBox
+            film={this.state.filmPoster}
+            char={this.state.charPoster}
+            clip={this.state.clipLink}
+          />
+        </div>
+        <div
+          class="d-flex"
+          style={{ fontFamily: "'Lora', serif", height: "15%" }}
+        >
+          <h2 class="quote">{this.state.quote}</h2>
+        </div>
+        <div style={{ height: "20%" }}>{form}</div>
+        <div style={{ height: "10%" }}>
           <ResultBox stage={stage} results={this.state.results} />
+        </div>
+        <div style={{ height: "10%" }}>
           <Controller nextStage={this.nextStage} name={button} />
         </div>
       </div>
@@ -203,7 +222,6 @@ function ResultBox(props) {
     <div class="d-flex justify-content-center">
       <img src={resultImg[0]} alt="..." class="result stage1" />
       <img src={resultImg[1]} alt="..." class="result stage2" />
-      <img src={resultImg[2]} alt="..." class="result stage3" />
     </div>
   );
 }
@@ -217,16 +235,27 @@ function ImageBox(props) {
   }
 
   return (
-    <div class="d-flex justify-content-center">
-      <img src={props.film} alt="..." class="poster film p-2" />
-      <div class="poster clip">
-        <ReactPlayer url={props.clip} height="100%" class="poster clip pt-2" />
+    <div class="d-flex">
+      <img
+        src={props.film}
+        alt="Film Poster"
+        height="100%"
+        class="poster film pr-2"
+      />
+      <div class="wrapper" style={{ width: "100%" }}>
+        <ReactPlayer
+          url={props.clip}
+          controls
+          width="100%"
+          height="100%"
+          class="poster clip"
+        />
       </div>
       <img
         src={props.char}
-        width="3em"
-        alt="..."
-        class="poster char p-2 img-fluid"
+        alt="Actor Poster"
+        height="100%"
+        class="poster char pl-2"
       />
     </div>
   );
@@ -236,7 +265,7 @@ function QuestionBox(props) {
   // decide if form or game is going to be component
   // one has to get data and then maybe use the form component to fill out using of course props
   return (
-    <div class="form contri justify-content-center">
+    <div class="contri justify-content-center">
       <h3 class="question">{props.question}: </h3>
       <input
         class="titleInput"
@@ -267,7 +296,7 @@ function AnswerBox(props) {
       inputColor[i] = "status text-danger";
     }
     allAnswers[i] = (
-      <div class="form p-0 d-flex align-items-center justify-content-center">
+      <div class="p-0 d-flex align-items-center justify-content-center">
         <h3 class={titleColor[i]}>{props.question[i]}: </h3>
         <div class="answerOutput d-flex flex-column">
           <span class={inputColor[i]}>{props.answerInputs[i]}</span>
@@ -278,22 +307,4 @@ function AnswerBox(props) {
   }
 
   return <div class="">{allAnswers}</div>;
-}
-
-function Controller(props) {
-  var stage = props.name;
-
-  if (stage === "New") {
-    return (
-      <button onClick={props.nextStage} class="btn btn-success m-2">
-        {props.name}
-      </button>
-    );
-  }
-
-  return (
-    <button onClick={props.nextStage} class="btn btn-primary m-2">
-      {props.name}
-    </button>
-  );
 }

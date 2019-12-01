@@ -1,11 +1,28 @@
-.quote {
-  max-width: 75%;
-  text-align: center;
-}
-
 .main {
   max-width: 860px;
   margin: auto;
+  height: 100%;
+}
+
+.poster {
+  display: none;
+}
+
+.poster.clip {
+  margin: auto;
+}
+
+.quote {
+  max-width: 90%;
+  margin: auto;
+  text-align: center;
+}
+
+.result {
+  display: none;
+  width: 50px;
+  height: 50px;
+  padding: 5px;
 }
 
 .question {
@@ -20,67 +37,45 @@
   outline: none;
   border-bottom: 1px solid #000;
   text-align: center;
-  font-size: 150%;
-  font-weight: 300;
+  font-size: 50%;
+  font-weight: 100;
 }
 
 .answerOutput {
   width: 150px;
 }
 
-.poster {
-  display: none;
-}
-
-.poster.film,
-.poster.char {
-  width: 150px;
-  height: 225px;
-  margin-top: 0.5rem;
-}
-
-.poster.clip {
-  max-width: 375px;
-  margin: auto;
-}
-
-.result {
-  display: none;
-  width: 50px;
-  height: 50px;
-  padding: 5px;
-}
-
 @media only screen and (max-width: 636px) {
   .quote {
-    font-size: 150%;
-  }
-  .stationaryBottom {
-    position: absolute;
-    top: 50%;
-    left: 5%;
-    margin-top: -5rem;
-    max-width: 90%;
+    font-size: 100%;
   }
 
-  .result {
-    width: 30px;
-    height: 30px;
-  }
-  .poster.film,
-  .poster.char {
-    width: 125px;
-    height: 175px;
-  }
   .poster.film.answer,
   .poster.char.answer {
     width: 0;
     opacity: 0;
     transition: opacity 2s;
   }
-  .poster.clip {
-    max-width: 90%;
-    margin: auto;
+
+  .player-wrapper {
+    position: relative;
+    padding-top: 56.25%; /* 720 / 1280 = 0.5625 */
+  }
+
+  .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .stationaryBottom {
+    position: absolute;
+    top: 40%;
+  }
+
+  .result {
+    width: 40px;
+    height: 40px;
   }
 
   .question {
@@ -103,19 +98,14 @@
     outline: none;
     border-bottom: 1px solid #000;
     text-align: center;
-    width: 300px;
     font-size: 100%;
     font-weight: 300;
+    width: 100%;
   }
 
   .answerOutput {
     font-size: 100%;
     font-weight: 300;
-    width: 200px;
     overflow-x: scroll;
-  }
-
-  .poster {
-    display: none;
   }
 }
