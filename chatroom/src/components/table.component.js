@@ -2,11 +2,6 @@ import React, { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import $ from "jquery";
 import axios from "axios";
-import "./admin.css";
-import Modal from "./modal.component";
-import Table from "../table.component";
-const Verify = React.lazy(() => import("./verify.component"));
-const Edit = React.lazy(() => import("./edit.component"));
 
 const LOCALHOST = process.env.REACT_APP_SERVER_IP;
 const LOCALIP = "http://" + LOCALHOST + ":8080";
@@ -16,7 +11,7 @@ const LOCALIP = "http://" + LOCALHOST + ":8080";
 // how can we make an API for the remaining:
 // character, character img, & clip
 
-class AdminPanel extends React.Component {
+class Table extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,14 +22,9 @@ class AdminPanel extends React.Component {
       side: "Verify",
       selected: []
     };
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.modalElement = React.createRef();
   }
 
   componentDidMount() {
-    $(".p-3.verify").hide();
-    $(".p-3.confirmed").hide();
     if (this.props.type === "verify") {
       console.log(this.props);
       var serverLocation = LOCALIP + "/verifymyguy/verify";
@@ -66,72 +56,16 @@ class AdminPanel extends React.Component {
     }
   }
 
-  closeModal() {
-    this.modalElement.current.closeQuote();
-    $(".background").hide();
-    $(".editModal").hide();
-  }
-
-  openModal(quote) {
-    this.setState({ selected: quote });
-    this.modalElement.current.loadQuote();
-    $(".background").show();
-    $(".editModal").show();
-  }
-
   render() {
     console.log(this.state.side);
-    var table, link;
-    if (this.state.side === "Confirmed") {
-      link = (
-        <Link to="/cris/edit">
-          <button class="btn flipper btn-primary">
-            View {this.state.side}
-          </button>
-        </Link>
-      );
-      table = this.state.verify.map((currentQuote, quote) => {
-        return (
-          <Suspense fallback={<div>Loading...</div>}>
-            <Verify
-              side={this.state.side}
-              openModal={this.openModal}
-              verify={currentQuote}
-              key={quote._id}
-            />
-          </Suspense>
-        );
-      });
-    }
-    if (this.state.side === "Verify") {
-      link = (
-        <Link to="/cris/edit">
-          <button class="btn flipper btn-primary">
-            View {this.state.side}
-          </button>
-        </Link>
-      );
-      table = this.state.confirmed.map((currentQuote, quote) => {
-        return (
-          <Suspense fallback={<div>Loading...</div>}>
-            <Edit
-              side={this.state.side}
-              openModal={this.openModal}
-              confirmed={currentQuote}
-              key={quote._id}
-            />
-          </Suspense>
-        );
-      });
-    }
+    var table;
+    table = "test test test test";
 
     return (
       <div>
-        <Table />
         <div class="main">
-          {link}
           <div class="holder">
-            <div class="p-3 verify">
+            <div class="p-2 verify">
               <h1 class="a title mb-0"> Please verify quotes </h1>
               <table className="table table-hover table-sm">
                 <thead>
@@ -143,7 +77,7 @@ class AdminPanel extends React.Component {
               </table>
             </div>
 
-            <div class="p-3 confirmed">
+            <div class="p-2 confirmed">
               <h2 class="a title mb-0"> Need to edit any quotes? </h2>
               <table className="mt-0 table table-hover table-sm">
                 <thead>
@@ -165,20 +99,11 @@ class AdminPanel extends React.Component {
             </div>
           </div>
         </div>
-        <div onClick={this.closeModal} class="background"></div>
-        <div class="editModal">
-          <Modal
-            ref={this.modalElement}
-            data={this.state.selected}
-            submit={this.closeModal}
-            side={this.state.side}
-          />
-        </div>
       </div>
     );
   }
 }
 
-export default AdminPanel;
+export default Table;
 
 //About is the wrong way it will create a modal on load for every quote not on click
