@@ -1,9 +1,10 @@
 import React from "react";
 import axios from "axios";
 import $ from "jquery";
-import "./contribute.css";
+import "./contribute.scss";
 import { Link } from "react-router-dom";
 
+import QuestionBox from "../components/game/questionBox.component";
 import Controller from "../components/controller.component";
 
 const LOCALHOST = process.env.REACT_APP_SERVER_IP;
@@ -23,6 +24,7 @@ class Contribute extends React.Component {
     this.keyPress = this.keyPress.bind(this);
 
     this.state = {
+      inputs: ["title", "actor", "year"],
       quote: "",
       title: "",
       character: "",
@@ -100,6 +102,9 @@ class Contribute extends React.Component {
   }
 
   render() {
+    // insert map function for inputs for each question
+    //cliplink is special because button also quote because textarea
+
     return (
       <div class="page main">
         <div style={{ height: "10%" }}>
@@ -118,30 +123,27 @@ class Contribute extends React.Component {
         </div>
         <div style={{ height: "65%" }}>
           <div class="form justify-content-center">
-            <h3
-              class="question col-3"
-              style={{ margin: "0", marginTop: "auto" }}
-            >
+            <h3 class="question" style={{ margin: "0", marginTop: "auto" }}>
               Quote:{" "}
             </h3>
             <textarea
               required
-              class="inputContri col-9"
+              class="inputContri"
               onKeyDown={this.keyPress}
               onChange={this.handleQuote}
               type="text"
             />
           </div>
+
+          <div class="This-Is-Where-To-Put-QuestionBox"></div>
+
           <div class="form justify-content-center">
-            <h3
-              class="question col-3"
-              style={{ margin: "0", marginTop: "auto" }}
-            >
+            <h3 class="question" style={{ margin: "0", marginTop: "auto" }}>
               Title:{" "}
             </h3>
             <input
               required
-              class="inputContri col-9"
+              class="inputContri"
               onKeyDown={this.keyPress}
               onChange={this.handleTitle}
               type="text"
@@ -149,15 +151,12 @@ class Contribute extends React.Component {
             />
           </div>
           <div class="form justify-content-center">
-            <h3
-              class="question col-3"
-              style={{ margin: "0", marginTop: "auto" }}
-            >
+            <h3 class="question" style={{ margin: "0", marginTop: "auto" }}>
               Actor:{" "}
             </h3>
             <input
               required
-              class="inputContri col-9"
+              class="inputContri"
               onKeyDown={this.keyPress}
               onChange={this.handleCharacter}
               type="text"
@@ -165,15 +164,12 @@ class Contribute extends React.Component {
             />
           </div>
           <div class="form justify-content-center">
-            <h3
-              class="question col-3"
-              style={{ margin: "0", marginTop: "auto" }}
-            >
+            <h3 class="question" style={{ margin: "0", marginTop: "auto" }}>
               Year:{" "}
             </h3>
             <input
               required
-              class="inputContri col-9"
+              class="inputContri"
               onKeyDown={this.keyPress}
               onChange={this.handleYear}
               type="text"

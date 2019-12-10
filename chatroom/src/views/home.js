@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import "./home.scss";
+
 function Home(props) {
   var link1, link2;
   if (props.location === "admin") {

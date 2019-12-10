@@ -2,9 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import $ from "jquery";
 import axios from "axios";
-import ReactPlayer from "react-player";
 import "./game.scss";
 
+import QuestionBox from "../components/game/questionBox.component";
+import ImageBox from "../components/game/imageBox.component";
+import ResultBox from "../components/game/resultBox.component";
+import AnswerBox from "../components/game/answerBox.component";
 import Controller from "../components/controller.component";
 
 const LOCALHOST = process.env.REACT_APP_SERVER_IP;
@@ -165,9 +168,12 @@ class Game extends React.Component {
       );
     }
 
+    // For Quote use a function that takes the length
+    // from there shrink font accordingly
+
     return (
-      <div class="page main">
-        <div style={{ height: "10%" }}>
+      <div class="main">
+        <div style={{ height: "8%" }}>
           <Link to="/contribute">
             <button
               class="btn btn-outline-secondary"
@@ -186,15 +192,20 @@ class Game extends React.Component {
         </div>
         <div
           class="d-flex"
-          style={{ fontFamily: "'Lora', serif", height: "15%" }}
+          style={{
+            fontFamily: "'Lora', serif",
+            height: "18%"
+          }}
         >
-          <h2 class="quote">{this.state.quote}</h2>
+          <h2 class="quote">"{this.state.quote}"</h2>
         </div>
-        <div style={{ height: "20%" }}>{form}</div>
-        <div style={{ height: "10%" }}>
+        <div class="questionBox" style={{ height: "15%" }}>
+          {form}
+        </div>
+        <div style={{ height: "14%" }}>
           <ResultBox stage={stage} results={this.state.results} />
         </div>
-        <div style={{ height: "10%" }}>
+        <div>
           <Controller nextStage={this.nextStage} name={button} />
         </div>
       </div>
@@ -203,108 +214,3 @@ class Game extends React.Component {
 }
 
 export default Game;
-
-var resultImg = [];
-
-function ResultBox(props) {
-  let result = props.results;
-
-  for (var i = 0; i < result.length; i++) {
-    if (result[i]) {
-      resultImg[i] =
-        "https://icon-library.net/images/success-icon/success-icon-5.jpg";
-    } else {
-      resultImg[i] = "https://png.pngtree.com/svg/20170918/fail_641034.png";
-    }
-  }
-
-  return (
-    <div class="d-flex justify-content-center">
-      <img src={resultImg[0]} alt="..." class="result stage1" />
-      <img src={resultImg[1]} alt="..." class="result stage2" />
-    </div>
-  );
-}
-
-function ImageBox(props) {
-  var height = document.querySelector(".poster.clip.answer");
-  if (height) {
-    console.log("success");
-  } else {
-    console.log(height);
-  }
-
-  return (
-    <div class="d-flex">
-      <img
-        src={props.film}
-        alt="Film Poster"
-        height="100%"
-        class="poster film pr-2"
-      />
-      <div class="wrapper" style={{ width: "100%" }}>
-        <ReactPlayer
-          url={props.clip}
-          controls
-          width="100%"
-          height="100%"
-          class="poster clip"
-        />
-      </div>
-      <img
-        src={props.char}
-        alt="Actor Poster"
-        height="100%"
-        class="poster char pl-2"
-      />
-    </div>
-  );
-}
-
-function QuestionBox(props) {
-  // decide if form or game is going to be component
-  // one has to get data and then maybe use the form component to fill out using of course props
-  return (
-    <div class="contri justify-content-center">
-      <h3 class="question">{props.question}: </h3>
-      <input
-        class="titleInput"
-        value={props.input}
-        onKeyDown={props.keyPress}
-        onChange={props.onInput}
-        type="text"
-      />
-    </div>
-  );
-}
-
-var inputColor = [];
-var titleColor = [];
-var allAnswers = [];
-
-function AnswerBox(props) {
-  //return the answerInputs green if good, red if bad
-  var answerResults = props.results;
-
-  // this neeed to be cleaned up
-  for (var i = 0; i < answerResults.length; i++) {
-    if (answerResults[i]) {
-      inputColor[i] = "status text-success";
-      titleColor[i] = "question green";
-    } else {
-      titleColor[i] = "question red";
-      inputColor[i] = "status text-danger";
-    }
-    allAnswers[i] = (
-      <div class="p-0 d-flex align-items-center justify-content-center">
-        <h3 class={titleColor[i]}>{props.question[i]}: </h3>
-        <div class="answerOutput d-flex flex-column">
-          <span class={inputColor[i]}>{props.answerInputs[i]}</span>
-          <span class="border-top text-success">{props.answers[i]}</span>
-        </div>
-      </div>
-    );
-  }
-
-  return <div class="">{allAnswers}</div>;
-}

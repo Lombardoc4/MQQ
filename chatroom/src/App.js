@@ -9,9 +9,9 @@ import AdminOld from "./components/admin/admin.component";
 import "./App.scss";
 
 const App = () => {
-  // be aware that fast transitions from home to game and vice versa
-  // will cause the whole template to be come display:none
-  // maybe disable buttons
+  // look to make new admin interface
+  // design as a wireframe, keep simple
+
   return (
     <Switch>
       <Route
