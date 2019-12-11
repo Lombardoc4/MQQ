@@ -2,6 +2,16 @@
   position: absolute;
   text-align: center;
   height: 100%;
+  width: 100%;
+
+  .imageBox {
+    width: 100%;
+  }
+
+  .btn {
+    margin-top: 1vh;
+    padding: 1vh;
+  }
 
   // imageBox
   .poster {
@@ -71,19 +81,33 @@
 
 @media only screen and (min-width: 576px) and (max-width: 991.98px) {
   .main {
-    width: 60%;
+    width: 70%;
     height: 100%;
-    left: 20%;
+    left: 15%;
 
-    // Quote
+    .imageBox {
+      width: 80%;
+    }
+
+    .switch {
+      padding-top: 3%;
+    }
+
+    //Quote
     .quote {
-      font-size: 150%;
+      font-size: 200%;
+      max-width: 100%;
+    }
+
+    .titleInput {
+      font-size: 200%;
+      font-weight: 200;
     }
 
     // Result Box
     .result {
-      width: 40px;
-      height: 40px;
+      width: 60px;
+      height: 60px;
     }
 
     .questionBox {
@@ -92,20 +116,115 @@
     }
 
     .question {
+      font-size: 200%;
+    }
+
+    // Answer Box
+    .answerOutput {
       font-size: 125%;
+      font-weight: 300;
     }
   }
 }
 
 @media only screen and (min-width: 992px) {
   .main {
-    width: 60%;
+    width: 80%;
     height: 100%;
-    left: 20%;
+    left: 10%;
+
+    .imageBox {
+      width: 60%;
+    }
+
+    .switch {
+      padding-top: 0%;
+    }
+
+    .btn {
+      font-size: 150%;
+    }
 
     .questionBox {
       width: 60%;
       margin: auto;
+    }
+
+    .question {
+      font-size: 150%;
+    }
+
+    //Quote
+    .quote {
+      font-size: 200%;
+    }
+
+    // Result Box
+    .result {
+      width: 50px;
+      height: 50px;
+    }
+
+    .titleInput {
+      font-size: 150%;
+      font-weight: 200;
+    }
+
+    // Answer Box
+    .answerOutput {
+      font-size: 150%;
+      font-weight: 300;
+    }
+  }
+}
+
+@media only screen and (min-width: 992px) and (min-height: 769px) {
+  .main {
+    width: 80%;
+    height: 100%;
+    left: 10%;
+
+    .imageBox {
+      width: 60%;
+    }
+
+    .switch {
+      padding-top: 0%;
+    }
+
+    .btn {
+      font-size: 150%;
+    }
+
+    .questionBox {
+      width: 60%;
+      margin: auto;
+    }
+
+    .question {
+      font-size: 250%;
+    }
+
+    //Quote
+    .quote {
+      font-size: 300%;
+    }
+
+    // Result Box
+    .result {
+      width: 75px;
+      height: 75px;
+    }
+
+    .titleInput {
+      font-size: 250%;
+      font-weight: 200;
+    }
+
+    // Answer Box
+    .answerOutput {
+      font-size: 200%;
+      font-weight: 300;
     }
   }
 }

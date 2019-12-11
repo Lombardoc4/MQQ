@@ -12,12 +12,12 @@ function ImageBox(props) {
   }
 
   return (
-    <div class="d-flex">
+    <div class="d-flex images">
       <img
         src={props.film}
         alt="Film Poster"
         height="100%"
-        class="poster film pr-2"
+        class="poster film pr-2 mx-auto"
       />
       <ReactPlayer
         url={props.clip}
@@ -30,7 +30,7 @@ function ImageBox(props) {
         src={props.char}
         alt="Actor Poster"
         height="100%"
-        class="poster char pl-2"
+        class="poster char pl-2 mx-auto"
       />
     </div>
   );

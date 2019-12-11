@@ -5,15 +5,10 @@ import "./home.scss";
 
 function Home(props) {
   var link1, link2;
-  if (props.location === "admin") {
-    link1 = "/cris/" + props.btn1;
-    link2 = "/cris/" + props.btn2;
-  } else {
-    link1 = "/" + props.btn1;
-    link2 = "/" + props.btn2;
-  }
-  // make the link dynamic
-  // takes props to differentiate
+  var link1 = "/" + props.btn1;
+  var link2 = "/" + props.btn2;
+
+  // load first quote for game
 
   return (
     <div class="welcome page">

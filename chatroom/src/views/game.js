@@ -43,12 +43,11 @@ class Game extends React.Component {
   }
 
   setQuote() {
-    console.log(process.env.REACT_APP_SERVER_IP);
     var serverLocation = LOCALIP + "/play";
     axios
       .get(serverLocation)
       .then(res => {
-        //load quote
+        //Sets Quote
         this.setState({
           quote: res.data.quote.quote,
           filmPoster: res.data.quote.filmPoster,
@@ -63,7 +62,8 @@ class Game extends React.Component {
       })
       .catch(function(error) {
         console.log(error);
-      });
+      })
+      .then(() => $(".btn").attr("disabled", false));
   }
 
   handleInput(e) {
@@ -79,7 +79,6 @@ class Game extends React.Component {
 
   nextStage(e) {
     var stage = this.state.stage;
-    // console.log(stage)
 
     if (stage <= 3) {
       var input = this.state.input.toUpperCase();
@@ -107,28 +106,31 @@ class Game extends React.Component {
       }
       if (stage === 3) {
         $(".stage3").fadeIn();
-
         $(".clip").fadeIn(1000);
+        $(".images").addClass("imageBox");
         $(".poster.film").addClass("answer");
         $(".poster.char").addClass("answer");
         $(".stage1").hide();
         $(".stage2").hide();
       }
+
       this.setState(state => {
         state.answerInputs.push(state.input);
       });
       stage++;
     } else {
+      $(".images").removeClass("imageBox");
       $(".poster.film").removeClass("answer");
       $(".poster.char").removeClass("answer");
 
       $(".film").hide();
       $(".char").hide();
+      $(".quote").fadeOut();
+      $(".btn").attr("disabled", true);
       $(".clip").hide(() => {
         this.setQuote();
       });
-      $(".quote").fadeOut();
-      $(".quote").fadeIn(1000);
+      $(".quote").fadeIn(2000);
 
       stage = 1;
       this.setState({
@@ -173,14 +175,9 @@ class Game extends React.Component {
 
     return (
       <div class="main">
-        <div style={{ height: "8%" }}>
+        <div class="switch" style={{ height: "10%" }}>
           <Link to="/contribute">
-            <button
-              class="btn btn-outline-secondary"
-              style={{ marginTop: "1vh", padding: "1vh" }}
-            >
-              Contribute
-            </button>
+            <button class="btn btn-outline-secondary">Contribute</button>
           </Link>
         </div>
         <div class="d-flex justify-content-center" style={{ height: "35%" }}>
@@ -194,7 +191,7 @@ class Game extends React.Component {
           class="d-flex"
           style={{
             fontFamily: "'Lora', serif",
-            height: "18%"
+            height: "15%"
           }}
         >
           <h2 class="quote">"{this.state.quote}"</h2>
