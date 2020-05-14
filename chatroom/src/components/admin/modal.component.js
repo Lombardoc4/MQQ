@@ -81,6 +81,7 @@ class Modal extends React.Component {
           character: this.props.data.character,
           year: this.props.data.year,
           clipLink: this.props.data.clipLink,
+          verified: false,
           filmPoster: "https://via.placeholder.com/150x200",
           charPoster: "https://via.placeholder.com/150x200"
         };
@@ -91,8 +92,9 @@ class Modal extends React.Component {
           character: this.props.data.character,
           year: this.props.data.year,
           clipLink: this.props.data.clipLink,
+          verified: false,
           filmPoster: this.props.data.filmPoster,
-          charPoster: this.props.data.charPoster
+          charPoster: this.props.data.charPoster,
         };
       }
       // the variable is defined
@@ -160,8 +162,10 @@ class Modal extends React.Component {
       character: this.state.character,
       year: this.state.year,
       clipLink: this.state.clipLink,
+      verified: false,
       filmPoster: this.state.filmPoster,
       charPoster: this.state.charPoster
+
     };
     // side is opposite because setState is behind?
     if (this.props.side === "Confirmed") {

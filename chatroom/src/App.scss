@@ -15,3 +15,6 @@ button {
   -webkit-border-radius: 25px !important;
   -moz-border-radius: 25px !important;
 }
+
+// prevents any duplicates
+@import-normalize; /* bring in normalize.css styles */

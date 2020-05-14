@@ -15,8 +15,6 @@ function Verify(props) {
       .then(console.log("Quote denied!"));
   };
 
-  var table;
-
   return (
     //create alert verification for deleting
     <div class="pt-3">

@@ -1,6 +1,4 @@
-import React, { lazy, Suspense } from "react";
-import { Link } from "react-router-dom";
-import $ from "jquery";
+import React from "react";
 import axios from "axios";
 
 const LOCALHOST = process.env.REACT_APP_SERVER_IP;
@@ -73,7 +71,7 @@ class Table extends React.Component {
                     <th>Total Quotes: {this.state.verifyLength}</th>
                   </tr>
                 </thead>
-                <tbody>{table}</tbody>
+                <tbody>{this.state.verify}</tbody>
               </table>
             </div>
 
@@ -94,7 +92,7 @@ class Table extends React.Component {
                     </th>
                   </tr>
                 </thead>
-                <tbody>{table}</tbody>
+                <tbody>{this.state.confirmed}</tbody>
               </table>
             </div>
           </div>

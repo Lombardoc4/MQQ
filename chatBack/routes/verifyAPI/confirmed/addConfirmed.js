@@ -1,4 +1,4 @@
-let Confirmed = require('../../../models/confirmedQuote.model');
+let Confirmed = require('../../../models/quote.model');
 
 module.exports = (req, res) => {
     let quote = new Confirmed(req.body);

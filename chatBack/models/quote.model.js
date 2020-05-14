@@ -9,7 +9,7 @@ let Quotes = new Schema({
   title: {
     type: String
   },
-  character: {
+  actor: {
     type: String
   },
   year: {

@@ -1,4 +1,4 @@
-let Verify = require('../../../models/verifyQuote.model');
+let Verify = require('../../../models/quote.model');
 
 module.exports = (req, res) => {
     let quote = new Verify(req.body);

@@ -10,7 +10,7 @@ function AnswerBox(props) {
   for (var i = 0; i < answerResults.length; i++) {
     if (answerResults[i]) {
       inputColor[i] = "status text-success";
-      titleColor[i] = "question green";
+      titleColor[i] = "question";
       props.answers[i] = "";
     } else {
       if (props.answerInputs[i] === "") {
@@ -18,18 +18,20 @@ function AnswerBox(props) {
       } else {
         inputColor[i] = "border-bottom status text-danger";
       }
-      titleColor[i] = " question red";
+      titleColor[i] = " question";
     }
     allAnswers[i] = (
-      <div class="p-0 d-flex">
+      <div class="p-0">
         <h3
           class={titleColor[i] + " align-self-center"}
           style={{ marginBottom: 0 }}
         >
           {props.question[i]}:{" "}
         </h3>
-        <div class="answerOutput d-flex flex-column align-self-end">
+        <div class="answerOutput align-items-center">
+          {/* check out length of props.answer and add spaces until length of answerInputs is same */}
           <span class={inputColor[i]}>{props.answerInputs[i]}</span>
+          |
           <span class="text-success">{props.answers[i]}</span>
         </div>
       </div>

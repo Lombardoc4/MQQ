@@ -5,14 +5,14 @@ function Controller(props) {
 
   if (stage === "New") {
     return (
-      <button onClick={props.nextStage} class="btn btn-success m-2">
+      <button onClick={props.nextStage} class="btn btn-success">
         {props.name}
       </button>
     );
   }
 
   return (
-    <button onClick={props.nextStage} class="btn btn-primary m-2">
+    <button onClick={props.nextStage} class="btn btn-primary">
       {props.name}
     </button>
   );

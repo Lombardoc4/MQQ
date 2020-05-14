@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import "./home.scss";
 
 function Home(props) {
-  var link1, link2;
   var link1 = "/" + props.btn1;
   var link2 = "/" + props.btn2;
 

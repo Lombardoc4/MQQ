@@ -4,6 +4,11 @@ import $ from "jquery";
 import axios from "axios";
 import "./game.scss";
 
+// //////////////////////////
+// Bro get ride of query
+// Use CSS instead
+// /////////////////////////
+
 import QuestionBox from "../components/game/questionBox.component";
 import ImageBox from "../components/game/imageBox.component";
 import ResultBox from "../components/game/resultBox.component";
@@ -47,6 +52,7 @@ class Game extends React.Component {
     axios
       .get(serverLocation)
       .then(res => {
+        console.log(res.data.quote);
         //Sets Quote
         this.setState({
           quote: res.data.quote.quote,
@@ -56,7 +62,7 @@ class Game extends React.Component {
         });
         this.setState(state => {
           state.answers.push(res.data.quote.title);
-          state.answers.push(res.data.quote.character);
+          state.answers.push(res.data.quote.actor);
           state.answers.push(res.data.quote.year);
         });
       })
@@ -79,8 +85,11 @@ class Game extends React.Component {
 
   nextStage(e) {
     var stage = this.state.stage;
+    $(".poster").removeClass('on');
 
     if (stage <= 3) {
+      var stage = this.state.stage;
+
       var input = this.state.input.toUpperCase();
       // this needs to be asynced or else will break because no value
       // if this.state.answers doesnt load before hitting next, BREAKS
@@ -96,17 +105,21 @@ class Game extends React.Component {
         });
       }
 
+      
+
       if (stage === 1) {
+
+        $('.imageBoxSpace, .questionBoxSpace, .film').addClass('on');
         $(".stage1").fadeIn();
-        $(".film").fadeIn();
+        // $(".film").fadeIn();
       }
       if (stage === 2) {
         $(".stage2").fadeIn();
-        $(".char").fadeIn();
+        $(".char, .arrow").addClass('on');
       }
       if (stage === 3) {
         $(".stage3").fadeIn();
-        $(".clip").fadeIn(1000);
+        $(".clip").addClass('on');
         $(".images").addClass("imageBox");
         $(".poster.film").addClass("answer");
         $(".poster.char").addClass("answer");
@@ -119,18 +132,20 @@ class Game extends React.Component {
       });
       stage++;
     } else {
+      $(".imageBoxSpace, .questionBoxSpace, .arrow").removeClass('on');
       $(".images").removeClass("imageBox");
       $(".poster.film").removeClass("answer");
       $(".poster.char").removeClass("answer");
 
-      $(".film").hide();
-      $(".char").hide();
+      // $(".film").hide();
+      // $(".char").hide();
       $(".quote").fadeOut();
       $(".btn").attr("disabled", true);
-      $(".clip").hide(() => {
-        this.setQuote();
-      });
-      $(".quote").fadeIn(2000);
+      this.setQuote();
+      // $(".clip").hide(() => {
+        
+      // });
+      $(".quote").fadeIn(1000);
 
       stage = 1;
       this.setState({
@@ -139,6 +154,7 @@ class Game extends React.Component {
         answers: []
       });
     }
+    
     this.setState({ stage: stage, input: "" });
     console.log(this.state.answers);
   }
@@ -180,7 +196,7 @@ class Game extends React.Component {
             <button class="btn btn-outline-secondary">Contribute</button>
           </Link>
         </div>
-        <div class="d-flex justify-content-center" style={{ height: "35%" }}>
+        <div class="imageBoxSpace d-flex justify-content-center">
           <ImageBox
             film={this.state.filmPoster}
             char={this.state.charPoster}
@@ -188,21 +204,20 @@ class Game extends React.Component {
           />
         </div>
         <div
-          class="d-flex"
+          class="quoteBoxSpace d-flex"
           style={{
             fontFamily: "'Lora', serif",
-            height: "15%"
           }}
         >
           <h2 class="quote">"{this.state.quote}"</h2>
         </div>
-        <div class="questionBox" style={{ height: "15%" }}>
+        <div class="questionBoxSpace questionBox">
           {form}
         </div>
-        <div style={{ height: "14%" }}>
+        <div style={{ height: "10%" }}>
           <ResultBox stage={stage} results={this.state.results} />
         </div>
-        <div>
+        <div style={{height: "10%"}}>
           <Controller nextStage={this.nextStage} name={button} />
         </div>
       </div>
