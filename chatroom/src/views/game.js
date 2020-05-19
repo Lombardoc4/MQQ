@@ -1,228 +1,165 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import $ from "jquery";
-import axios from "axios";
+import React, { useState } from "react";
+import { Link, useLocation} from "react-router-dom";
+
 import "./game.scss";
 
-// //////////////////////////
-// Bro get ride of query
-// Use CSS instead
-// /////////////////////////
 
-import QuestionBox from "../components/game/questionBox.component";
-import ImageBox from "../components/game/imageBox.component";
-import ResultBox from "../components/game/resultBox.component";
-import AnswerBox from "../components/game/answerBox.component";
-import Controller from "../components/controller.component";
+function VisualAid (props) {
+    let imageStuff = [];
 
-const LOCALHOST = process.env.REACT_APP_SERVER_IP;
-const LOCALIP = "http://" + LOCALHOST + ":8080";
-// change answer box answerInput color
-// resultIndicators still broken
+    let imageIndex = props.stageArray[props.stageArray.length - 1]
+    let currentImage;
+    console.log(imageIndex)
 
-// if you type it changes the 'result' resulting in changed images
-
-class Game extends React.Component {
-  // use state to decide which stage of question
-  constructor(props) {
-    super(props);
-    this.state = {
-      stage: 1,
-      questions: ["Title", "Actor", "Year"],
-      quote: "",
-      answers: [],
-      filmPoster: "",
-      charPoster: "",
-      clipLink: "",
-      input: "",
-      answerInputs: [],
-      results: []
-    };
-    this.nextStage = this.nextStage.bind(this);
-    this.handleInput = this.handleInput.bind(this);
-    this.keyPress = this.keyPress.bind(this);
-  }
-
-  componentDidMount() {
-    this.setQuote();
-  }
-
-  setQuote() {
-    var serverLocation = LOCALIP + "/play";
-    axios
-      .get(serverLocation)
-      .then(res => {
-        console.log(res.data.quote);
-        //Sets Quote
-        this.setState({
-          quote: res.data.quote.quote,
-          filmPoster: res.data.quote.filmPoster,
-          charPoster: res.data.quote.charPoster,
-          clipLink: res.data.quote.clipLink
-        });
-        this.setState(state => {
-          state.answers.push(res.data.quote.title);
-          state.answers.push(res.data.quote.actor);
-          state.answers.push(res.data.quote.year);
-        });
-      })
-      .catch(function(error) {
-        console.log(error);
-      })
-      .then(() => $(".btn").attr("disabled", false));
-  }
-
-  handleInput(e) {
-    this.setState({ input: e.target.value });
-  }
-
-  keyPress(e) {
-    if (e.keyCode === 13) {
-      this.nextStage();
-      // put the login here
+    if (typeof imageIndex === 'undefined'){
+        return null;
     }
-  }
 
-  nextStage(e) {
-    var stage = this.state.stage;
-    $(".poster").removeClass('on');
-
-    if (stage <= 3) {
-      var stage = this.state.stage;
-
-      var input = this.state.input.toUpperCase();
-      // this needs to be asynced or else will break because no value
-      // if this.state.answers doesnt load before hitting next, BREAKS
-      var answer = this.state.answers[stage - 1].toUpperCase();
-
-      if (input === answer) {
-        this.setState(state => {
-          state.results.push(true);
-        });
-      } else {
-        this.setState(state => {
-          state.results.push(false);
-        });
-      }
-
-      
-
-      if (stage === 1) {
-
-        $('.imageBoxSpace, .questionBoxSpace, .film').addClass('on');
-        $(".stage1").fadeIn();
-        // $(".film").fadeIn();
-      }
-      if (stage === 2) {
-        $(".stage2").fadeIn();
-        $(".char, .arrow").addClass('on');
-      }
-      if (stage === 3) {
-        $(".stage3").fadeIn();
-        $(".clip").addClass('on');
-        $(".images").addClass("imageBox");
-        $(".poster.film").addClass("answer");
-        $(".poster.char").addClass("answer");
-        $(".stage1").hide();
-        $(".stage2").hide();
-      }
-
-      this.setState(state => {
-        state.answerInputs.push(state.input);
-      });
-      stage++;
+    if (imageIndex === 2){
+        let youtubeLink;
+        if (props.images[imageIndex].link.includes("watch?v=")) {
+            youtubeLink = props.images[imageIndex].link.replace("watch?v=", "embed/")
+        }
+        // VIDEO
+        currentImage = <iframe style={{marginBottom:"-6px"}} rel="0" playsInline="1" modestbranding="1" type="text/html" width="640" height="360" src={youtubeLink} frameBorder="0"></iframe>
     } else {
-      $(".imageBoxSpace, .questionBoxSpace, .arrow").removeClass('on');
-      $(".images").removeClass("imageBox");
-      $(".poster.film").removeClass("answer");
-      $(".poster.char").removeClass("answer");
-
-      // $(".film").hide();
-      // $(".char").hide();
-      $(".quote").fadeOut();
-      $(".btn").attr("disabled", true);
-      this.setQuote();
-      // $(".clip").hide(() => {
-        
-      // });
-      $(".quote").fadeIn(1000);
-
-      stage = 1;
-      this.setState({
-        answerInputs: [],
-        results: [],
-        answers: []
-      });
+        currentImage = <img src={props.images[imageIndex].link}/>
     }
-    
-    this.setState({ stage: stage, input: "" });
-    console.log(this.state.answers);
-  }
-
-  render() {
-    const stage = this.state.stage;
-    let form, button;
-    if (stage <= 3) {
-      button = "Next";
-      form = (
-        <QuestionBox
-          input={this.state.input}
-          onInput={this.handleInput}
-          keyPress={this.keyPress}
-          question={this.state.questions[stage - 1]}
-        />
-      );
-    }
-    if (stage === 4) {
-      button = "New";
-      form = (
-        <AnswerBox
-          question={this.state.questions}
-          answerInputs={this.state.answerInputs}
-          answers={this.state.answers}
-          results={this.state.results}
-          stage={stage}
-        />
-      );
-    }
-
-    // For Quote use a function that takes the length
-    // from there shrink font accordingly
 
     return (
-      <div class="main">
-        <div class="switch" style={{ height: "10%" }}>
-          <Link to="/contribute">
-            <button class="btn btn-outline-secondary">Contribute</button>
-          </Link>
+        <div>
+            <div onClick={props.shiftLeft} style={{height: "25px", width:"25px", background: "black" }} className="left-arrow"></div>
+            {currentImage}
+            <div onClick={props.shiftRight} style={{height: "25px", width:"25px", background: "black" }} className="right-arrow"></div>
         </div>
-        <div class="imageBoxSpace d-flex justify-content-center">
-          <ImageBox
-            film={this.state.filmPoster}
-            char={this.state.charPoster}
-            clip={this.state.clipLink}
-          />
-        </div>
-        <div
-          class="quoteBoxSpace d-flex"
-          style={{
-            fontFamily: "'Lora', serif",
-          }}
-        >
-          <h2 class="quote">"{this.state.quote}"</h2>
-        </div>
-        <div class="questionBoxSpace questionBox">
-          {form}
-        </div>
-        <div style={{ height: "10%" }}>
-          <ResultBox stage={stage} results={this.state.results} />
-        </div>
-        <div style={{height: "10%"}}>
-          <Controller nextStage={this.nextStage} name={button} />
-        </div>
-      </div>
-    );
-  }
+    )
 }
 
-export default Game;
+function Quote (props) {
+    return(
+        <div>{props.quote}</div>
+    )
+}
+
+
+
+function QuestionSet (props) {
+    const FALSEDATA1 = "WRONG";
+    const FALSEDATA2 = "WRONG2";
+
+    const options = [];
+    const userOptions = [];
+
+    // how can this be an array already?
+    options.push(FALSEDATA1, FALSEDATA2, props.question.answer);
+    const optionsLength = options.length;
+
+    for (let i = 0; i < optionsLength; i++){
+        const rando = Math.floor(Math.random() * (3 - i));
+
+        console.log(options[rando]);
+        console.log(rando);
+
+
+        userOptions.push(<div key={options[rando]} onClick={() => {props.nextStage(options[rando])}}>{options[rando]}</div>);
+        options.splice(rando, 1);
+    }
+
+    return (
+        <div>
+            <h1>{props.question.question}</h1>
+            {userOptions}
+        </div>
+    )
+}
+
+function Answers (props) {
+    const answerSet = [];
+    props.answers.forEach(answer => {
+        answerSet.push(
+            <div key={answer.answer}>
+                <h1>{answer.question}</h1>
+                <p>{answer.answer}</p>
+            </div>
+        )
+    });
+
+    return (
+        <div>
+            {answerSet}
+            <button onClick={props.newQuote}>New Quote</button>
+        </div>
+    )
+}
+
+function GameBody () {
+    const FAKEDATA = {
+        quote: "I've had it with these motherfuckin snakes on this motherfuckin plane",
+        quoteData: [
+            {question:"Film Title", answer: "Snakes on a Plane"},
+            {question:"Actor", answer: "Neville Flynn"},
+            {question:"Year", answer: "2006"}
+        ],
+        images: [
+            {imageType: "poster", link: "https://m.media-amazon.com/images/M/MV5BZDY3ODM2YTgtYTU5NC00MTE4LTkzNjktMzNhZWZmMzJjMWRjXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg"},
+            {imageType: "actor", link: "https://m.media-amazon.com/images/M/MV5BMTM4OTc4NDY0OF5BMl5BanBnXkFtZTcwNzE3NzU0NA@@._V1_.jpg"},
+            {imageType: "clip", link: "https://www.youtube.com/watch?v=vLaX8UvVUQw"}
+        ]
+    }
+
+    const [gameState, gameInteraction] = useState({
+        data:       FAKEDATA,
+        userInputs:  [],
+    });
+
+    function incrementStage(input) {
+        if (gameState.userInputs.length < 3) {
+            let mutatedState = {...gameState};
+            mutatedState.userInputs = mutatedState.userInputs.push(input);
+            console.log(input);
+            // mutatedArray.push(gameState.stage.length);
+            // gameInteraction({...gameState, gameState.stage : mutatedArray});
+        } else {
+            gameInteraction({
+                data:       FAKEDATA,
+                userInputs:  [],
+            });
+        }
+    }
+
+    // const shiftOrderRight = () => {
+    //     let mutatedArray = stage.map(loc => loc);
+    //     let first = mutatedArray.shift();
+    //     mutatedArray.push(first);
+    //     setStage(mutatedArray)
+    // };
+
+    // const shiftOrderLeft = () => {
+    //     let mutatedArray = stage.map(loc => loc);
+    //     let last = mutatedArray.pop();
+    //     mutatedArray.unshift(last);
+    //     setStage(mutatedArray)
+    // }
+    console.log(gameState);
+
+    const InputOutput = () => {
+        return(
+            // gameState.userInputs.length < 3 ?
+            <QuestionSet nextStage={incrementStage()} question={gameState.data.quoteData[gameState.userInputs.length]}/>
+            // :
+            // <Answers newQuote={incrementStage()} answers={gameState.data.quoteData}/>
+        );
+    }
+
+    // const splicedData = DATA.images.splice(0, stage.length);
+
+    return (
+        <div>
+            {/* <VisualAid shiftRight={shiftOrderRight} shiftLeft={shiftOrderLeft} stageArray={stage} images={splicedData}/> */}
+            <Quote quote={gameState.data.quote}/>
+            <InputOutput/>
+        </div>
+    )
+}
+
+export default GameBody

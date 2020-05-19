@@ -1,33 +1,36 @@
 import React, { useState } from "react";
+import { Link, useLocation} from "react-router-dom";
+
 import "./game.scss";
 import Contribute from "./contribute";
 
-function UserContainer () {
-    const [experience, setExperience] = useState('Play');
+const UserContainer =  (props) => {
+    // Get URL Location
+    const local = useLocation();
+    const experienceTitle = local.pathname.slice(1).toUpperCase();
 
-    const experienceTitle = experience === "Play" ? "Contribute" : "Play";
+    // Setting Button Link
+    let buttonLink;
+    let buttonTitle;
+    if (experienceTitle === 'PLAY')
+        buttonLink = '/contribute'
+        buttonTitle = 'CONTRIBUTE'
 
-    const switchExperience = () => {
-        setExperience(experienceTitle);
-    }
+    if (experienceTitle === 'CONTRIBUTE')
+        buttonLink = '/play'
+        buttonTitle = 'PLAY'
 
-    const UserExperience = () => {
-        return(experience === "Play" ? <GameBody /> : <Contribute/>);
-    }
+    // Creating Button
+    const SideSelector = () =>  (<Link to={buttonLink}><button>{buttonTitle}</button></Link>);
+
+    // Create Main Component
+    const UserExperience = () => (experienceTitle === "PLAY" ? <GameBody /> : <Contribute/>);
 
     return (
         <div>
-            <SideSelector buttonLabel={experienceTitle} switch={switchExperience}/>
+            <SideSelector />
             <UserExperience />
         </div>
-    )
-}
-
-export default UserContainer;
-
-function SideSelector (props) {
-    return (
-        <button onClick={props.switch}>{props.buttonLabel}</button>
     )
 }
 
@@ -56,20 +59,6 @@ function VisualAid (props) {
         currentImage = <img src={props.images[imageIndex].link}/>
     }
 
-    // for (let i = 0; i < props.stageArray.length; i++){
-    //     let orderId = props.stageArray[i];
-
-    //     if(props.stageArray[i] === 2){
-    //         console.log(props.images[orderId].link)
-    //         let youtubeTitle = props.images[orderId].link.replace("watch?v=", "embed/")
-    //         imageStuff.push(<iframe style={{marginBottom:"-6px"}} rel="0" playsInline="1" modestbranding="1" type="text/html" width="640" height="360"
-    //         src={youtubeTitle}
-    //         frameBorder="0"></iframe>)
-    //     } else {
-    //         imageStuff.push(<img key={i} src={props.images[orderId].link}/>)
-    //     }
-    // }
-
     return (
         <div>
             <div onClick={props.shiftLeft} style={{height: "25px", width:"25px", background: "black" }} className="left-arrow"></div>
@@ -89,8 +78,8 @@ function Quote (props) {
 
 function QuestionSet (props) {
 
-    const FALSEDATA1 = "WRONG"; 
-    const FALSEDATA2 = "WRONG2"; 
+    const FALSEDATA1 = "WRONG";
+    const FALSEDATA2 = "WRONG2";
 
     const options = [];
     const userOptions = [];
@@ -115,7 +104,6 @@ function QuestionSet (props) {
 
 function Answers (props) {
     const answerSet = [];
-
     props.answers.forEach(answer => {
         answerSet.push(
             <div key={answer.answer}>
@@ -161,26 +149,14 @@ function GameBody () {
         }
     }
 
-    // const incrementStage = () => {
-
-    //     if (stage.length < 3) {
-    //         let mutatedArray = stage;
-    //         mutatedArray.push(stage.length);
-    //         setStage(mutatedArray);
-    //         console.log(stage);
-    //     } else {
-    //         setStage([0]);
-    //     }
-    // }
-
     const shiftOrderRight = () => {
         let mutatedArray = stage.map(loc => loc);
         let first = mutatedArray.shift();
         mutatedArray.push(first);
         setStage(mutatedArray)
         console.log(stage);
-    };    
-    
+    };
+
     const shiftOrderLeft = () => {
         let mutatedArray = stage.map(loc => loc);
         let last = mutatedArray.pop();
@@ -214,7 +190,7 @@ function GameBody () {
 //////////////////////////////////////
 
 
-function ContributeBody () {
+const ContributeBody =  () => {
     return (
         <div>
 
@@ -261,3 +237,4 @@ function ContributeBody () {
     )
 }
 
+export default UserContainer

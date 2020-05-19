@@ -1,73 +1,66 @@
 import React from "react";
-import { withRouter, Switch, Route } from "react-router-dom";
+import { Switch, Route, Link} from "react-router-dom";
 
-import Game from "./views/game";
-import Contribute from "./views/contribute";
+// import Game from "./views/game";
+// import Contribute from "./views/contribute";
 import Home from "./views/home";
-import AdminOld from "./components/admin/admin.component";
-import AdminNew from "./views/admin";
+// import AdminOld from "./components/admin/admin.component";
+import Admin from "./views/admin";
 import Verify from "./components/admin/verify.component";
 
 
-import TestGame from "./views/game2";
+import UserContainer from "./views/user";
 
 // Global CSS to go down tree
-import "./App.scss";
+import "./scss/App.scss";
 
 
 // ADD MOVIE_QQ CUTBOARD  FROM AI for loading screen
 // And logo to homepage
 // Change font to new courier - the screenplay font
+const Homescreen = props => (
+  <div class="welcome page">
+    <h2 class="title">{props.title}</h2>
+    <Link to={'/' + props.link1}>
+      <button class="btn btn-success btn-lg m-3">{props.link1.toUpperCase()}</button>
+    </Link>
+    <Link to={'/' + props.link2}>
+      <button class="btn btn-primary btn-lg m-3">{props.link2.toUpperCase()}</button>
+    </Link>
+  </div>
+);
 
 const App = () => {
-  // look to make new admin interface
-  // design as a wireframe, keep simple
+
+  // load first quote for game
 
   return (
     <Switch>
-      <Route
-        exact
-        path="/cris"
-        render={props => (
-          <Home location="admin" title="MQQ Admin" btn1="Verify" btn2="Edit" />
-        )}
-      />
-      
-      <Route
-        exact
-        path="/cris/verify"
-        render={props => <AdminOld type="verify"/>}
-      />      
-      <Route
-      exact
-      path="/admintest"
-      render={props => <AdminNew />}
-    />
-      <Route
-        exact
-        path="/cris/edit"
-        render={props => <AdminOld type="edit" />}
-      />
 
-      <Route path="/test">
-        <TestGame />
-      </Route>      
-
+    {/* User */}
+      <Route exact path="/">
+        <Homescreen title="Welcome to Movie Quote Quiz" link1="play" link2="contribute"/>
+      </Route>
       <Route path="/play">
-        <Game />
+        <UserContainer/>
       </Route>
-
       <Route path="/contribute">
-        <Contribute />
+        <UserContainer />
       </Route>
 
-      <Route
-        exact 
-        path="/"
-        render={props => (<Home location="home" title="Welcome to Movie Quote Quiz" btn1="Play" btn2="Contribute"/>)}
-      />
+    {/* Admin */}
+      <Route exact path="/cris-admin">
+        <Homescreen title="Admin to Movie Quote Quiz" link1="verify" link2="edit"/>
+      </Route>
+      <Route exact path="/cris-admin/verify">
+        <Admin/>
+      </Route>
+      <Route exact path="/cris-admin/edit">
+        <Admin/>
+      </Route>
+
     </Switch>
   );
 };
 
-export default withRouter(App);
+export default App;
