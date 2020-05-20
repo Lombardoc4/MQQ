@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation} from "react-router-dom";
 
-import "./game.scss";
 import Contribute from "./contribute";
 import GameBody from "./game";
 
@@ -27,7 +26,7 @@ const UserContainer =  () => {
     const SideSelector = () =>  (<Link to={buttonLink}><button>{buttonTitle}</button></Link>);
 
     // Create Main Component
-    const UserExperience = () => (experienceTitle === "PLAY" ? <GameBody /> : <Contribute/>);
+    const UserExperience = () => (experienceTitle === "/play" ? <GameBody /> : <Contribute/>);
 
     return (
         <div>
