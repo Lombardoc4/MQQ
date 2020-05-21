@@ -1,42 +1,68 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 import "./game.scss";
 
 
 const VisualAid = (props) => {
-    const [availableImages, setImages] = useState([]);
+    const displayCount = parseInt(props.displayCount);
+    const [availableImages, setImages] = useState([])
     // let imageIndex = props.displayCount - 1;
     let currentImage;
+    useEffect(() => {
+        let imageArray = [];
+        for (let i = 0; i < props.displayCount; i++){
+            imageArray.push(props.images[i]);
+        }
+        setImages(imageArray)
+    }, [props.displayCount]);
 
 
+    let viewingImage = availableImages[availableImages.length - 1];
     // if (typeof imageIndex === 'undefined'){
     //     return null;
     // }
-    if ( typeof props.image === 'undefined'){
+    if ( availableImages.length === 0 ){
         return true;
     } else {
-        if (props.image.imageType === 'clip') {
+        if (viewingImage.imageType === 'clip') {
             let youtubeLink;
-            if (props.image.link.includes("watch?v=")) {
-                youtubeLink = props.image.link.replace("watch?v=", "embed/")
+            if (viewingImage.link.includes("watch?v=")) {
+                youtubeLink = viewingImage.link.replace("watch?v=", "embed/")
             }
             // VIDEO
             currentImage = <iframe style={{marginBottom:"-6px"}} rel="0" playsInline="1" modestbranding="1" type="text/html" width="640" height="360" src={youtubeLink} frameBorder="0"></iframe>
         } else {
-        currentImage = <img src={props.image.link}/>
+        currentImage = <img src={viewingImage.link}/>
         }
     }
 
+    // TODO: SHIFTING
+    const shiftOrderRight = () => {
+        const imageArray =  [...availableImages];
+        let first = imageArray.shift();
+        imageArray.push(first);
+        console.log(imageArray);
+        setImages( imageArray )
+    };
 
-    // if (imageIndex === 2){
-    // } else {
-    // }
+    const shiftOrderLeft = () => {
+        const imageArray =  [...availableImages];
+        let last = imageArray.pop();
+        imageArray.unshift(last);
+        console.log(imageArray);
+
+        setImages( imageArray )
+    }
+
+    const leftShifter = displayCount === 1 ? '' : <div onClick={shiftOrderLeft} style={{height: "25px", width:"25px", background: "black" }} className="left-arrow"></div>
+    const righttShifter = displayCount === 1 ? '' : <div onClick={shiftOrderRight} style={{height: "25px", width:"25px", background: "black" }} className="right-arrow"></div>
+
 
     return (
         <div>
-            <div onClick={props.shiftLeft} style={{height: "25px", width:"25px", background: "black" }} className="left-arrow"></div>
+            {leftShifter}
             {currentImage}
-            <div onClick={props.shiftRight} style={{height: "25px", width:"25px", background: "black" }} className="right-arrow"></div>
+            {righttShifter}
         </div>
     )
 }
@@ -119,7 +145,6 @@ function GameBody () {
 
     const [gameState, gameInteraction] = useState({
         userInputs:  [],
-        availableImages: []
     });
 
     console.log('updating GameBody')
@@ -127,31 +152,13 @@ function GameBody () {
 
 // available images === gameState.data.
 
-    const shiftOrderRight = () => {
-        // Get relative array, for available images
-        // const imageStaticSlice = FAKEDATA.images.slice(gameState.userInputs.length)
-        const imageArray =  [...gameState.availableImages];
-        let first = imageArray.shift();
-        imageArray.push(first);
-
-        gameInteraction({...gameState, availableImages: imageArray})
-    };
-
-    const shiftOrderLeft = () => {
-        let mutatedArray =  gameState.stage.map(loc => loc);
-        let last = mutatedArray.pop();
-        mutatedArray.unshift(last);
-        gameInteraction(mutatedArray)
-    }
 
 
         // user selects an answer
     const incrementStage = (input) => {
         if (gameState.userInputs.length < 3) {
             let mutatedState = {...gameState};
-            mutatedState.availableImages = [...gameState.availableImages, FAKEDATA.images[gameState.userInputs.length]]
             mutatedState.userInputs = [...gameState.userInputs, input];
-
             gameInteraction(mutatedState);
         } else {
             gameInteraction({
@@ -174,7 +181,7 @@ function GameBody () {
 
     return (
         <div>
-            <VisualAid shiftRight={shiftOrderRight} shiftLeft={shiftOrderLeft} displayCount={gameState.userInputs.length} image={gameState.availableImages[gameState.userInputs.length - 1]}/>
+            <VisualAid displayCount={gameState.userInputs.length} images={FAKEDATA.images}/>
             <Quote quote={FAKEDATA.quote}/>
             <InputOutput/>
         </div>
