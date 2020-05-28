@@ -1,3 +1,46 @@
+@import 'mixins';
+
+
+// *************************
+// *** Colors
+// *************************
+$c1: #28a745;
+$c2: #007bff;
+$c3: #0A8CAA;
+
+$colors: (
+  1: $c1,
+  2: $c2,
+  3: $c3,
+  white: #ffffff,
+  black: #000000,
+);
+
+// Bootstrap colors and background colors
+@each $i, $color in $colors{
+  .color-#{$i}{ color: #{$color} }
+  .bg-#{$i}{ background-color: #{$color} }
+}
+
+// *************************
+// *** Centering Mixin
+// *************************
+.center-h{
+  @include center(horizontal)
+}
+
+.center-v{
+  @include center(vertical)
+}
+
+.center-both{
+  @include center(both)
+}
+
+// ********************************
+// *** General
+// ********************************
+
 * {
   box-sizing: border-box;
 }
@@ -11,10 +54,18 @@ input {
 }
 button {
   width: 10rem;
-  border-radius: 25px !important;
-  -webkit-border-radius: 25px !important;
-  -moz-border-radius: 25px !important;
+  font-size: 20px;
+  color: white;
+  padding: 5px;
+  border-radius: 15px !important;
+  -webkit-border-radius: 15px !important;
+  -moz-border-radius: 15px !important;
 }
+
+
+// ********************************
+// *** Homepage
+// ********************************
 
 .page {
   position: absolute;
@@ -27,10 +78,51 @@ button {
   margin-top: -100px;
 }
 .title {
-  font-size: 250%;
-  color: #000;
+  max-width: 90%;
+  margin: auto;
+  margin-bottom: 20px;
   font-weight: 100;
+  font-size: 200%;
+  font-family: 'Courier New', Courier, monospace;
+  color: #000;
 }
+
+// ********************************
+// *** Play
+// ********************************
+
+.image-container{
+  flex: 1;
+  height: 150px;
+  max-width: 70%;
+
+  & * {
+    height: 150px;
+    max-width: 100%;
+  }
+}
+
+.left-arrow, .right-arrow{
+
+  width: 25px;
+  height: 25px;
+  border: 6px solid;
+  border-color: black transparent transparent black;
+  transform: rotate(-45deg);
+}
+
+.right-arrow{
+  transform: rotate(135deg);
+}
+
+.quote {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+  line-height: 1.25;
+  width: 80%;
+}
+
+
 
 // prevents any duplicates
 @import-normalize; /* bring in normalize.css styles */

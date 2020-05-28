@@ -1,11 +1,5 @@
-import React from "react";
+import React, {useState} from "react";
 import axios from "axios";
-import $ from "jquery";
-import "./contribute.scss";
-import { Link } from "react-router-dom";
-
-import QuestionBox from "../components/game/questionBox.component";
-import Controller from "../components/controller.component";
 
 const LOCALHOST = process.env.REACT_APP_SERVER_IP;
 const LOCALIP = "http://" + LOCALHOST + ":8080";
@@ -13,190 +7,160 @@ const LOCALIP = "http://" + LOCALHOST + ":8080";
 
 let bots = false;
 
-class Contribute extends React.Component {
-  // use state to decide which stage of question
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleQuote = this.handleQuote.bind(this);
-    this.handleTitle = this.handleTitle.bind(this);
-    this.handleCharacter = this.handleCharacter.bind(this);
-    this.handleYear = this.handleYear.bind(this);
-    this.handleLink = this.handleLink.bind(this);
-    this.keyPress = this.keyPress.bind(this);
-    this.videoSearch = this.videoSearch.bind(this);
+const Contribute = () => {
+  const [userInput, setInputs] = useState(
+    {
+      quote: '',
+      title: '',
+      clipLink: '',
+      valid: ''
+    }
+  )
 
-    this.state = {
-      quote: "",
-      title: "",
-      character: "",
-      year: "",
-      clipLink: ""
-    };
+  const onChange = evt => {
+    evt.persist();
+    setInputs(inputs => {return({...inputs, [evt.target.name]: evt.target.value})});
   }
 
-
-  handleQuote(e) {
-    this.setState({ quote: e.target.value });
-    document.getElementsByTagName('input')[0].classList.remove('invalid');
-  }
-  handleTitle(e) {
-    this.setState({ title: e.target.value });
-    document.getElementsByTagName('input')[1].classList.remove('invalid');
-
-  }
-  handleCharacter(e) {
-    this.setState({ character: e.target.value });
-    document.getElementsByTagName('input')[2].classList.remove('invalid');
-
-  }
-  handleYear(e) {
-    this.setState({ year: e.target.value });
-    document.getElementsByTagName('input')[3].classList.remove('invalid');
-
-  }
-  handleLink(e) {
-    this.setState({ clipLink: e.target.value });
-    document.getElementsByTagName('input')[4].classList.remove('invalid');
-
-  }
-  handleBots(e) {
+  const handleBots = (e) => {
     bots = true;
   }
 
-  videoSearch(e) {
+  const videoSearch = (e) => {
     e.preventDefault();
-    console.log(this.state);
     let searchString = "https://www.youtube.com/results?search_query=";
-    if (typeof this.state.quote !== 'undefined'){
-      searchString += this.state.quote + " ";
+    if (typeof userInput.quote !== 'undefined'){
+      searchString += userInput.quote + " ";
     }
-    if (typeof this.state.title !== 'undefined'){
-      searchString += this.state.title + " ";
+    if (typeof userInput.title !== 'undefined'){
+      searchString += userInput.title + " ";
     }
-    
+
     window.open(searchString, "_blank");
   }
 
-  keyPress(e) {
-    if (e.keyCode === 13) {
-      this.handleSubmit(e);
-      // put the login here
-    }
-  }
-  validateForm() {
-    var valid = false;
-    var list = document.getElementsByTagName("input");
+  const validateForm = () => {
+    let tempValid = false;
+    const list = document.getElementsByClassName("userInput");
+    console.log(list);
 
     if (bots === true){
       console.log("youre a bot");
-      return valid;
+      return tempValid;
     } else {
-      for (var i = 0; i < list.length; i++) {
+      for (let i = 0; i < list.length; i++) {
+
         // If a field is empty...
         if (!list[i].value) {
-          $(list[i]).addClass("invalid");
-          valid = false;
+          console.log(list[i].value)
+          // $(list[i]).addClass("invalid");
+          tempValid = false
+
         } else {
-          $(list[i]).removeClass("invalid");
-          valid = true;
+          console.log('temp true')
+          // $(list[i]).removeClass("invalid");
+          tempValid = true
+
         }
       }
-      return valid;
+      console.log('valid', tempValid);
+
+      setInputs({...userInput, valid : tempValid});
+
+
+      return tempValid;
     }
   }
 
-  handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    let validator = this.validateForm()
+    let validator = validateForm()
     if (!validator) {
-      $(".failure").fadeIn();
       return false;
     }
-    $(".failure").hide();
 
-    // if (ghostInput === true) {
-    //   denyForm-thisIsABot
-    // } else {}
-
-    var newQuote = {
-      quote: this.state.quote,
-      title: this.state.title,
-      character: this.state.character,
-      year: this.state.year,
-      clipLink: this.state.clipLink,
+    const newQuote = { ...userInput,
       verified: false
     };
-    //  send to db
-    var serverLocation = LOCALIP + "/verifymyguy/verify";
-    axios.post(serverLocation, newQuote).catch(err => console.log(err));
 
-    $(".submission").fadeIn();
-    this.setState({
+    console.log(newQuote);
+    //  send to db
+    // const serverLocation = LOCALIP + "/verifymyguy/verify";
+    // axios.post(serverLocation, newQuote).catch(err => console.log(err));
+
+    setInputs({
       quote: "",
       title: "",
-      character: "",
-      year: "",
-      clipLink: ""
+      clipLink: "",
+      valid: true
     });
   }
 
-  render() {
-    // insert map function for inputs for each question
-    //cliplink is special because button also quote because textarea
+  const keyPress = (e) => {
+    if (e.keyCode === 13) {
+      handleSubmit(e);
+      // put the login here
+    }
+  }
+
+  let confirmation = '';
+  if (userInput.valid !== ''){
+    confirmation = userInput.valid ? <p class="submission text-success">Thank you for your submission</p> : <p class="failure text-danger">Please provide all the information</p>
+  }
+
+
 
     return (
       <div>
         <div>
-          <p class="submission text-success">Thank you for your submission</p>
-          <p class="failure text-danger">Please provide all the information</p>
+          {confirmation}
         </div>
         <div>
             <input
-              required
+              className="userInput"
+              name="quote"
               placeholder="Quote"
-              onKeyDown={this.keyPress}
-              onChange={this.handleQuote}
+              onKeyDown={keyPress}
+              onChange={onChange}
               type="text"
             />
 
             <input
-              required
               placeholder="Hidden Question"
-              onChange={this.handleBots}
+              onChange={handleBots}
               type="text"
             />
             <input
-              required
-              onKeyDown={this.keyPress}
-              onChange={this.handleTitle}
+              className="userInput"
+              name='title'
+              onKeyDown={keyPress}
+              onChange={onChange}
               placeholder="Title"
               type="text"
               maxLength="40"
             />
             <input
-              required
               placeholder="Hidden Question"
-              onChange={this.handleBots}
+              onChange={handleBots}
               type="text"
             />
-              <button onClick={this.videoSearch}>
+              <button onClick={videoSearch}>
                 Search Youtube
               </button>
             <input
-              required
-              onKeyDown={this.keyPress}
-              onChange={this.handleLink}
+              className="userInput"
+              name='clipLink'
+              onKeyDown={keyPress}
+              onChange={onChange}
               placeholder="Video Link"
               type="text"
             />
         </div>
         <div style={{ height: "20%" }}>
-          <Controller nextStage={this.handleSubmit} name="Submit" />
+          <button onClick={handleSubmit} class="btn btn-success">Submit</button>
         </div>
       </div>
     );
-  }
 }
 
 export default Contribute;

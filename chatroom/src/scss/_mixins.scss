@@ -1,0 +1,56 @@
+//============================================================
+// breakpoint
+//============================================================
+@mixin breakpoint($point) {
+    @if $point == xl {
+      @media (min-width: 1200px) { @content; }
+    } @else if $point == lg {
+      @media (min-width: 992px) { @content; }
+    } @else if $point == md {
+      @media (min-width: 768px) { @content; }
+    } @else if $point == sm {
+      @media (min-width: 576px)  { @content; }
+    }
+  }
+
+// Define vertical, horizontal, or both position
+@mixin center($position) {
+    position: relative;
+
+    @if $position == 'vertical' {
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+    }
+    @else if $position == 'horizontal' {
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+      transform: translate(-50%);
+    }
+    @else if $position == 'both' {
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+}
+
+$spacer: 1px !default;
+$spacers: (10, 20, 25);
+
+@each $k in $spacers{
+@each $key, $val in (margin: m, padding: p) {
+    @if not ($val == p) or not ($k == auto) and not ($k < 0) { // Not for padding
+    $n: if($k != auto and $k < 0, 'n' + ($k * -1), $k);
+    $space: if($k != auto, ($k * $spacer), $k);
+    .#{$val}-#{$n}{ #{$key}: $space; }
+    .#{$val}t-#{$n}, .#{$val}y-#{$n}{ #{$key}-top:    $space; }
+    .#{$val}b-#{$n}, .#{$val}y-#{$n}{ #{$key}-bottom: $space; }
+    .#{$val}l-#{$n}, .#{$val}x-#{$n}{ #{$key}-left:   $space; }
+    .#{$val}r#-#{$n}, .#{$val}x-#{$n}{ #{$key}-right:  $space; }
+    }
+}
+}

@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-import "./game.scss";
+// import "./game.scss";
 
 
 const VisualAid = (props) => {
@@ -30,9 +30,9 @@ const VisualAid = (props) => {
                 youtubeLink = viewingImage.link.replace("watch?v=", "embed/")
             }
             // VIDEO
-            currentImage = <iframe style={{marginBottom:"-6px"}} rel="0" playsInline="1" modestbranding="1" type="text/html" width="640" height="360" src={youtubeLink} frameBorder="0"></iframe>
+            currentImage = <iframe class="center-h" rel="0" playsInline="1" modestbranding="1" type="text/html" src={youtubeLink} frameBorder="0"></iframe>
         } else {
-        currentImage = <img src={viewingImage.link}/>
+        currentImage = <img class="center-h" src={viewingImage.link}/>
         }
     }
 
@@ -54,14 +54,14 @@ const VisualAid = (props) => {
         setImages( imageArray )
     }
 
-    const leftShifter = displayCount === 1 ? '' : <div onClick={shiftOrderLeft} style={{height: "25px", width:"25px", background: "black" }} className="left-arrow"></div>
-    const righttShifter = displayCount === 1 ? '' : <div onClick={shiftOrderRight} style={{height: "25px", width:"25px", background: "black" }} className="right-arrow"></div>
+    const leftShifter = displayCount === 1 ? '' : <div onClick={shiftOrderLeft} className="left-arrow"></div>
+    const righttShifter = displayCount === 1 ? '' : <div onClick={shiftOrderRight} className="right-arrow"></div>
 
 
     return (
-        <div>
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             {leftShifter}
-            {currentImage}
+            <div class="image-container">{currentImage}</div>
             {righttShifter}
         </div>
     )
@@ -69,14 +69,17 @@ const VisualAid = (props) => {
 
 function Quote (props) {
     return(
-        <div>{props.quote}</div>
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '32px', fontFamily: 'font-family: "Courier New", Courier, monospace;'}}>
+            "
+            <div class="quote">{props.quote}</div>
+            "
+        </div>
     )
 }
 
 function QuestionSet(props) {
     // PROPS will BRING DATA
 
-    // TODO: PREVENT FROM RERENDER ON SHIFT
 
     const FALSEDATA1 = "WRONG";
     const FALSEDATA2 = "WRONG2";
@@ -99,15 +102,7 @@ function QuestionSet(props) {
         </div>
     )
 }
-function checkValues(prev, next) {
-    if (prev.question === next.question){
-        return true;
-    } else {
-        return false;
-    }
-};
 
-const QuestionBody = React.memo(QuestionSet, checkValues);
 
 function Answers (props) {
     const answerSet = [];
@@ -171,7 +166,7 @@ function GameBody () {
     const InputOutput = () => {
         return(
             gameState.userInputs.length < 3 ?
-            <QuestionBody nextStage={incrementStage} question={FAKEDATA.quoteData[gameState.userInputs.length]}/>
+            <QuestionSet nextStage={incrementStage} question={FAKEDATA.quoteData[gameState.userInputs.length]}/>
             :
             <Answers newQuote={incrementStage} answers={FAKEDATA.quoteData}/>
         )
@@ -180,7 +175,7 @@ function GameBody () {
 
 
     return (
-        <div>
+        <div class=''>
             <VisualAid displayCount={gameState.userInputs.length} images={FAKEDATA.images}/>
             <Quote quote={FAKEDATA.quote}/>
             <InputOutput/>
