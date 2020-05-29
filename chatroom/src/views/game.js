@@ -22,7 +22,7 @@ const VisualAid = (props) => {
     //     return null;
     // }
     if ( availableImages.length === 0 ){
-        return true;
+        // return true;
     } else {
         if (viewingImage.imageType === 'clip') {
             let youtubeLink;
@@ -54,14 +54,14 @@ const VisualAid = (props) => {
         setImages( imageArray )
     }
 
-    const leftShifter = displayCount === 1 ? '' : <div onClick={shiftOrderLeft} className="left-arrow"></div>
-    const righttShifter = displayCount === 1 ? '' : <div onClick={shiftOrderRight} className="right-arrow"></div>
+    const leftShifter = displayCount <= 1 ? '' : <div onClick={shiftOrderLeft} className="left-arrow"></div>
+    const righttShifter = displayCount <= 1 ? '' : <div onClick={shiftOrderRight} className="right-arrow"></div>
 
 
     return (
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <div className="image-container">
             {leftShifter}
-            <div class="image-container">{currentImage}</div>
+            <div className="asset-container">{currentImage}</div>
             {righttShifter}
         </div>
     )
@@ -69,9 +69,9 @@ const VisualAid = (props) => {
 
 function Quote (props) {
     return(
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '32px', fontFamily: 'font-family: "Courier New", Courier, monospace;'}}>
+        <div className="quote-container">
             "
-            <div class="quote">{props.quote}</div>
+            <div className="quote">{props.quote}</div>
             "
         </div>
     )
@@ -92,12 +92,12 @@ function QuestionSet(props) {
 
         [options[i], options[j]] = [options[j], options[i]];
 
-        userOptions.push(<div key={options[i]} onClick={() => {props.nextStage(options[i])}}>{options[i]}</div>);
+        userOptions.push(<button class="bc-black question-option" key={options[i]} onClick={() => {props.nextStage(options[i])}}>{options[i]}</button>);
     }
 
     return (
-        <div>
-            <h1>{props.question.question}</h1>
+        <div className="question-container">
+            <p className="question-title">{props.question.question}</p>
             {userOptions}
         </div>
     )
@@ -108,9 +108,9 @@ function Answers (props) {
     const answerSet = [];
     props.answers.forEach(answer => {
         answerSet.push(
-            <div key={answer.answer}>
-                <h1>{answer.question}</h1>
-                <p>{answer.answer}</p>
+            <div className="courier" key={answer.answer}>
+                <div>{answer.question}</div>
+                <div>{answer.answer}</div>
             </div>
         )
     });
@@ -175,7 +175,7 @@ function GameBody () {
 
 
     return (
-        <div class=''>
+        <div className="main-container">
             <VisualAid displayCount={gameState.userInputs.length} images={FAKEDATA.images}/>
             <Quote quote={FAKEDATA.quote}/>
             <InputOutput/>

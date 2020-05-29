@@ -29,10 +29,10 @@ const Homescreen = props => {
   <div class="welcome page">
     <h2 class="title">{props.title}</h2>
     <Link to={props.link1}>
-      <button class="bg-1 m-2">{button1.toUpperCase()}</button>
+      <button class="bc-3 color-3 m-2">{button1.toUpperCase()}</button>
     </Link>
     <Link to={props.link2}>
-      <button class="bg-2 m-2">{button2.toUpperCase()}</button>
+      <button class="bc-black color-black m-2">{button2.toUpperCase()}</button>
     </Link>
   </div>
 )};
@@ -42,31 +42,31 @@ const App = () => {
   // load first quote for game
 
   return (
-    <Switch>
+      <Switch >
 
-    {/* User */}
-      <Route exact path="/">
-        <Homescreen title="Welcome to Movie Quote Quiz" link1="/play" link2="/contribute"/>
-      </Route>
-      <Route path="/play">
-        <UserContainer/>
-      </Route>
-      <Route path="/contribute">
-        <UserContainer />
-      </Route>
+      {/* User */}
+        <Route exact path="/">
+          <Homescreen title="Welcome to Movie Quote Quiz" link1="/play" link2="/contribute"/>
+        </Route>
+        <Route path="/play">
+          <UserContainer/>
+        </Route>
+        <Route path="/contribute">
+          <UserContainer />
+        </Route>
 
-    {/* Admin */}
-      <Route exact path="/cris-admin">
-        <Homescreen title="Admin to Movie Quote Quiz" link1="/cris-admin/verify" link2="/cris-admin/verify"/>
-      </Route>
-      <Route exact path="/cris-admin/verify">
-        <Admin/>
-      </Route>
-      <Route exact path="/cris-admin/edit">
-        <Admin/>
-      </Route>
+      {/* Admin */}
+        <Route exact path="/cris-admin">
+          <Homescreen title="Admin to Movie Quote Quiz" link1="/cris-admin/verify" link2="/cris-admin/verify"/>
+        </Route>
+        <Route exact path="/cris-admin/verify">
+          <Admin/>
+        </Route>
+        <Route exact path="/cris-admin/edit">
+          <Admin/>
+        </Route>
 
-    </Switch>
+      </Switch>
   );
 };
 

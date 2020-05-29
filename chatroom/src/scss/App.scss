@@ -6,7 +6,7 @@
 // *************************
 $c1: #28a745;
 $c2: #007bff;
-$c3: #0A8CAA;
+$c3: #FF0000;
 
 $colors: (
   1: $c1,
@@ -20,6 +20,7 @@ $colors: (
 @each $i, $color in $colors{
   .color-#{$i}{ color: #{$color} }
   .bg-#{$i}{ background-color: #{$color} }
+  .bc-#{$i}{ border: 2px solid #{$color} }
 }
 
 // *************************
@@ -55,11 +56,17 @@ input {
 button {
   width: 10rem;
   font-size: 20px;
-  color: white;
+  background-color: white;
   padding: 5px;
   border-radius: 15px !important;
   -webkit-border-radius: 15px !important;
   -moz-border-radius: 15px !important;
+}
+
+.main-container{
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -87,18 +94,32 @@ button {
   color: #000;
 }
 
+.courier{
+  font-family: 'Courier New', Courier, monospace;
+}
+
 // ********************************
 // *** Play
 // ********************************
 
+// Images
 .image-container{
-  flex: 1;
-  height: 150px;
+  height: 33%;
+  margin-top: auto;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.asset-container{
+  height: 100%;
   max-width: 70%;
 
   & * {
-    height: 150px;
+    height: 100%;
     max-width: 100%;
+    border: 1px solid #FF0000;
   }
 }
 
@@ -115,11 +136,48 @@ button {
   transform: rotate(135deg);
 }
 
+// Quote
+.quote-container{
+  // margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 32px;
+  font-family: "Courier New", Courier, monospace;
+}
+
 .quote {
-  font-family: 'Courier New', Courier, monospace;
   font-size: 20px;
   line-height: 1.25;
   width: 80%;
+}
+
+// Questions
+.question-container{
+  width: 90%;
+  margin: auto;
+  // margin-top: 0;
+  // justify-content: center;
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.question-title{
+  font-size: 20px;
+  margin-bottom: 0;
+  color: red;
+}
+
+.question-option{
+  width: 80%;
+  // margin: auto;
+  margin-top: 8px;
+  // border-radius: 15px;
+  // padding: 5px;
+  font-weight: bold;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 
