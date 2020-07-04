@@ -60,9 +60,11 @@ const VisualAid = (props) => {
 
     return (
         <div className="image-container">
-            {leftShifter}
             <div className="asset-container">{currentImage}</div>
-            {righttShifter}
+            <div class="shifters">
+                {leftShifter}
+                {righttShifter}
+            </div>
         </div>
     )
 }
@@ -117,9 +119,8 @@ function Answers (props) {
     const answerSet = [];
     props.answers.forEach(answer => {
         answerSet.push(
-            <div className="courier" key={answer.answer}>
-                <div>{answer.question}</div>
-                <div>{answer.answer}</div>
+            <div class="answer-container" key={answer.answer}>
+                {answer.question} : {answer.answer}
             </div>
         )
     });
@@ -151,14 +152,7 @@ function GameBody () {
         userInputs:  [],
     });
 
-    console.log('updating GameBody')
-
-
-// available images === gameState.data.
-
-
-
-        // user selects an answer
+    // User selects an answer
     const incrementStage = (input) => {
         if (gameState.userInputs.length < 3) {
             let mutatedState = {...gameState};
@@ -172,22 +166,25 @@ function GameBody () {
         }
     }
 
+    const numOfInputs = gameState.userInputs.length;
+
+
     const InputOutput = () => {
         return(
-            gameState.userInputs.length < 3 ?
-            <QuestionSet question={FAKEDATA.quoteData[inputLength]} nextStage={incrementStage} />
+            numOfInputs < 3 ?
+            <><Quote quote={FAKEDATA.quote}/><QuestionSet question={FAKEDATA.quoteData[numOfInputs]} nextStage={incrementStage} /></>
             :
-            <Answers newQuote={incrementStage} answers={FAKEDATA.quoteData}/>
+            <><VisualAid displayCount={gameState.userInputs.length} images={FAKEDATA.images}/><Answers newQuote={incrementStage} answers={FAKEDATA.quoteData}/></>
         )
     }
 
 
-    const inputLength = gameState.userInputs.length;
+
     return (
         <div className="main-container">
-            <QuestionTitle sceneNum={inputLength} question={FAKEDATA.quoteData[inputLength]} />
+            <QuestionTitle sceneNum={numOfInputs} question={FAKEDATA.quoteData[numOfInputs]} />
             {/* <VisualAid displayCount={gameState.userInputs.length} images={FAKEDATA.images}/> */}
-            <Quote quote={FAKEDATA.quote}/>
+
             <InputOutput/>
         </div>
     )
