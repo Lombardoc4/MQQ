@@ -26,13 +26,13 @@ const Homescreen = props => {
     button2 = button2.replace('cris-admin/', '');
 
   return(
-  <div class="welcome page">
-    <h2 class="title">{props.title}</h2>
+  <div className="welcome page">
+    <h2 className="title">{props.title}</h2>
     <Link to={props.link1}>
-      <button class="bc-3 color-3 m-2">{button1.toUpperCase()}</button>
+      <button className="bc-3 color-3 m-2">{button1.toUpperCase()}</button>
     </Link>
     <Link to={props.link2}>
-      <button class="bc-black color-black m-2">{button2.toUpperCase()}</button>
+      <button className="bc-black color-black m-2">{button2.toUpperCase()}</button>
     </Link>
   </div>
 )};

@@ -23,15 +23,16 @@ const UserContainer =  () => {
     }
 
     // Creating Button
-    const SideSelector = () =>  (<Link to={buttonLink}><button class="bc-3 center-h my-10">{buttonTitle}</button></Link>);
+    const SideSelector = () =>  (<Link to={buttonLink}><button className="bc-3 center-h my-10">{buttonTitle}</button></Link>);
 
     // Create Main Component
     const UserExperience = () => (experienceTitle === "/play" ? <GameBody /> : <Contribute/>);
 
     return (
         <div>
-            <SideSelector />
             <UserExperience />
+            {/* <SideSelector /> */}
+
         </div>
     )
 }

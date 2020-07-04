@@ -30,9 +30,9 @@ const VisualAid = (props) => {
                 youtubeLink = viewingImage.link.replace("watch?v=", "embed/")
             }
             // VIDEO
-            currentImage = <iframe class="center-h" rel="0" playsInline="1" modestbranding="1" type="text/html" src={youtubeLink} frameBorder="0"></iframe>
+            currentImage = <iframe className="center-h" rel="0" playsInline="1" modestbranding="1" type="text/html" src={youtubeLink} frameBorder="0"></iframe>
         } else {
-        currentImage = <img class="center-h" src={viewingImage.link}/>
+        currentImage = <img className="center-h" src={viewingImage.link}/>
         }
     }
 
@@ -77,9 +77,17 @@ function Quote (props) {
     )
 }
 
+function QuestionTitle(props) {
+    if (props.sceneNum < 3) {
+        return (
+            <p className="question-title">Scene {props.sceneNum + 1}: {props.question.question}</p>
+        )
+    }
+    return true;
+}
+
 function QuestionSet(props) {
     // PROPS will BRING DATA
-
 
     const FALSEDATA1 = "WRONG";
     const FALSEDATA2 = "WRONG2";
@@ -92,12 +100,13 @@ function QuestionSet(props) {
 
         [options[i], options[j]] = [options[j], options[i]];
 
-        userOptions.push(<button class="bc-black question-option" key={options[i]} onClick={() => {props.nextStage(options[i])}}>{options[i]}</button>);
+        userOptions.push(<button className="bc-black question-option" key={options[i]} onClick={() => {props.nextStage(options[i])}}>{options[i]}</button>);
     }
+
+    // const sceneNum =
 
     return (
         <div className="question-container">
-            <p className="question-title">{props.question.question}</p>
             {userOptions}
         </div>
     )
@@ -125,9 +134,9 @@ function Answers (props) {
 
 function GameBody () {
     const FAKEDATA = {
-        quote: "I've had it with these motherfuckin snakes on this motherfuckin plane",
+        quote: "I've had it with these motherfuckin snakes on this motherfuckin plane, I've had it with these motherfuckin snakes on this motherfuckin plane, I've had it with these motherfuckin snakes on this motherfuckin plane I've had it with these motherfuckin snakes on this motherfuckin plane",
         quoteData: [
-            {question:"Film Title", answer: "Snakes on a Plane"},
+            {question:"Film", answer: "Snakes on a Plane"},
             {question:"Actor", answer: "Neville Flynn"},
             {question:"Year", answer: "2006"}
         ],
@@ -166,17 +175,18 @@ function GameBody () {
     const InputOutput = () => {
         return(
             gameState.userInputs.length < 3 ?
-            <QuestionSet nextStage={incrementStage} question={FAKEDATA.quoteData[gameState.userInputs.length]}/>
+            <QuestionSet question={FAKEDATA.quoteData[inputLength]} nextStage={incrementStage} />
             :
             <Answers newQuote={incrementStage} answers={FAKEDATA.quoteData}/>
         )
     }
 
 
-
+    const inputLength = gameState.userInputs.length;
     return (
         <div className="main-container">
-            <VisualAid displayCount={gameState.userInputs.length} images={FAKEDATA.images}/>
+            <QuestionTitle sceneNum={inputLength} question={FAKEDATA.quoteData[inputLength]} />
+            {/* <VisualAid displayCount={gameState.userInputs.length} images={FAKEDATA.images}/> */}
             <Quote quote={FAKEDATA.quote}/>
             <InputOutput/>
         </div>
